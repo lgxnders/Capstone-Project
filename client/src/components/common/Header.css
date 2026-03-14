@@ -1,0 +1,36 @@
+/* Header */
+.header {
+  background-image: linear-gradient(rgba(0,0,0,0.18), rgba(0,0,0,0.18)), linear-gradient(to right top, #0066ff, #345aff, #534bff, #6e36ff, #8700ff);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-blend-mode: multiply;
+  color: #fff;
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  transition: box-shadow 180ms ease, background-position 400ms ease;
+}
+
+.header-title {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.header-title a {
+  color: #fff;
+  text-decoration: none;
+}
+
+nav a {
+  color: rgba(255,255,255,0.95);
+  text-decoration: none;
+  margin: 0 8px;
+  transition: opacity 140ms ease, color 140ms ease;
+}
+
+nav a:hover {
+  opacity: 0.95;
+  text-decoration: underline;
+}
