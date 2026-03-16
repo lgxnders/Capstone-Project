@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../config/database.js';
+// import { sequelize } from '../config/database.js';
 
 const Resource = sequelize.define('Resource', {
   title:        { type: DataTypes.STRING(200), allowNull: false },
