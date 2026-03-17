@@ -1,0 +1,12 @@
+Remember to type 'npm i' before testing the server.
+
+The quickest way to run the project after making changes is by running the 'npm run dev' command.
+
+
+Server files are written in TypeScript inside of the root/src directory.
+
+TypeScript files can be compiled to root/dist using 'npm run build',
+followed by 'npm run start', to use Vite to run the compiled files in root/dist.
+
+Alternatively, the 'ts-node' module can be used to compile and run files in-memory,
+saving time.
