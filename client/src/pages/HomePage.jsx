@@ -6,7 +6,10 @@ import Footer from "../components/common/Footer";
 export default function HomePage() {
   return (
     <div className="home-container">
-    <Header/>
+      <div className="home-blob-1" />
+      <div className="home-blob-2" />
+
+      <Header/>
       <div className="home-inner">
         <div className="chat-link-wrapper">
           <Link to="/chat" className="chat-link">
