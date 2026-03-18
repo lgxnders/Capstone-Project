@@ -88,6 +88,11 @@
   margin-top: 28px;
 }
 
+
+.resources h2 {
+  color: rgb(234, 168, 234);
+}
+
 .resources p {
   color: #666;
 }
