@@ -20,15 +20,20 @@ Next, run the client in another terminal with 'npm run dev'.
 Once on the localhost:port URL provided by the client's console output, try pasting the following (or similar) information
 into the terminal (comes up when you press f12):
 
+
+Register:
+
 await fetch('http://localhost:8000/auth/register', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    username: 'alex',
-    email: 'alex@gmail.com',
-    password: 'password123',
-    firstName: 'Alexander',
-    lastName: 'Stasyna'
-  })
+  body: JSON.stringify({ username: 'alex', email: 'alex@test.com', password: 'password123', firstName: 'Alexander', lastName: 'Stasyna' })
 }).then(r => r.json())
 
+
+Login:
+
+await fetch('http://localhost:8000/auth/login', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ email: 'alex@test.com', password: 'password123' })
+}).then(r => r.json())
