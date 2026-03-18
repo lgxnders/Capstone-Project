@@ -7,6 +7,7 @@ const UserSchema = new Schema<UserDocument>({
     userId:         { type: Number, required: true, unique: true },
     username:       { type: String, required: true, unique: true },
     email:          { type: String, required: true, unique: true },
+    passwordHash:   { type: String, required: true },
     firstName:      { type: String },
     lastName:       { type: String },
     conversations: [{ type: Schema.Types.ObjectId, ref: 'Conversation' }],
