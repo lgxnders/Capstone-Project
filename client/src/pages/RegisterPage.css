@@ -11,6 +11,10 @@
   overflow: hidden;
 }
 
+.form-group input {
+  color: #826bb7;
+}
+
 /* Animated background particles */
 .register-container::before {
   content: '';
