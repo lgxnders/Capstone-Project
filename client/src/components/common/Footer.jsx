@@ -5,7 +5,7 @@ import "./Footer.css";
 const Footer = () => {
   return (
     <footer className="footer">
-      <p>&copy; 2025 Care Compass. All Rights Reserved.</p>
+      <p>&copy; 2026 Care Compass. All Rights Reserved.</p>
     </footer>
   );
 };
