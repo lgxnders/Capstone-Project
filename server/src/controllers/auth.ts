@@ -1,4 +1,5 @@
 import type { Request, Response } from 'express';
+import { UserModel } from '../models/User';
 
 export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
@@ -10,10 +11,27 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const register = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+    const { username, email,
+            password, // salt+hash
+            firstName, lastName
+          } = req.body;
 
-  // salt+hash password here
-  // save to DB
+    try {
+        // https://www.mongodb.com/docs/manual/reference/method/db.collection.countdocuments/
+        const userCount = await UserModel.countDocuments();
 
-  res.status(201).json({ message: 'User created' });
+        const newUser = new UserModel({
+            userId:     userCount + 1,
+            username,   email,
+            firstName,  lastName,
+            conversations: [],
+        });
+
+        await newUser.save();
+
+        res.status(200).json({ message: 'User created', userId: newUser.userId });
+    
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to create user' });
+    }
 };

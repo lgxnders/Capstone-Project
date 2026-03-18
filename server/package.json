@@ -8,7 +8,7 @@
   "main": "server.js",
   "scripts": {
     "dev": "ts-node src/server.ts",
-    "start": "npx vite dist/server.js",
+    "start": "node dist/server.js",
     "build": "tsc"
   },
   "devDependencies": {
@@ -16,8 +16,7 @@
     "@types/express": "^5.0.6",
     "@types/mongoose": "^5.11.96",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.3",
-    "vite": "^8.0.0"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "cors": "^2.8.6",

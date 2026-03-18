@@ -2,11 +2,11 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 
-import { connectToDB } from './database.ts';
+import { connectToDB } from './database';
 
-import chatRoutes from './routes/chat.ts';
-import userRoutes from './routes/users.ts';
-import authRoutes from './routes/auth.ts';
+import chatRoutes from './routes/chat';
+import userRoutes from './routes/users';
+import authRoutes from './routes/auth';
 
 const app = express();
 const PORT = process.env.PORT;
