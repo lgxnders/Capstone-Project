@@ -1,22 +1,59 @@
-//Header coponent with navigation links to different pages
-//Not all pages linked in the header are created yet but assuming they will be in the future
-import React from "react";
-import "./Header.css";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import "./Header.css";
 
 const Header = () => {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const closeMenu = () => setMenuOpen(false);
+
   return (
-    <header className="header">
-      <h1 className="header-title">
-        <Link to="/">Care Compass</Link>
-    </h1>
-      <nav>
-        <Link to="/chat">Chatbot</Link>
-        <Link to="/admin">Admin</Link>
-        <Link to="/about">About Care Compass</Link>
-        <Link to="/register">Register</Link>
-        <Link to="/login">Login</Link>
-      </nav>
+    <header className={`header ${scrolled ? "header--scrolled" : ""}`}>
+      <div className="header-inner">
+
+        {/* Logo */}
+        <Link to="/" className="header-logo" onClick={closeMenu}>
+          <span className="header-logo-icon">✦</span>
+          Care Compass
+        </Link>
+
+        {/* Desktop Nav */}
+        <nav className="header-nav">
+          <Link to="/chat" className="header-link">Chatbot</Link>
+          <Link to="/about" className="header-link">About</Link>
+          <Link to="/admin" className="header-link">Admin</Link>
+          <div className="header-divider" />
+          <Link to="/register" className="header-link">Register</Link>
+          <Link to="/login" className="header-cta">Login</Link>
+        </nav>
+
+        {/* Hamburger */}
+        <button
+          className={`header-hamburger ${menuOpen ? "header-hamburger--open" : ""}`}
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle menu"
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+      </div>
+
+      {/* Mobile Dropdown */}
+      <div className={`header-mobile-menu ${menuOpen ? "header-mobile-menu--open" : ""}`}>
+        <Link to="/chat"     className="header-mobile-link" onClick={closeMenu}>Chatbot</Link>
+        <Link to="/about"    className="header-mobile-link" onClick={closeMenu}>About</Link>
+        <Link to="/admin"    className="header-mobile-link" onClick={closeMenu}>Admin</Link>
+        <Link to="/register" className="header-mobile-link" onClick={closeMenu}>Register</Link>
+        <Link to="/login"    className="header-mobile-link header-mobile-cta" onClick={closeMenu}>Login</Link>
+      </div>
     </header>
   );
 };
