@@ -12,7 +12,7 @@ import authRoutes from './routes/auth';
 let PORT;
 try {
     PORT = process.env.PORT;
-    
+
     if (PORT === undefined) throw new Error("Port is undefined.")
 
 } catch (err) {
@@ -30,8 +30,6 @@ app.use(express.json());
 app.use('/api/chat', chatRoutes);
 app.use('/api/users', userRoutes);
 app.use('/auth', authRoutes);
-
-console.log(PORT)
 
 // Attempt to connect to database and then listen for requests.
 connectToDB().then( () => {
