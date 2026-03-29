@@ -1,6 +1,3 @@
-// Based on the insight provided in the last stakeholders meeting
-
-// rather than using Gemini (preferred, but Gemini remains a strong viable alternative.)
 import React, { useState, useRef, useEffect } from 'react';
 import { sendChatMessage } from '../../services/api';
 import { Bot, User, Send, Loader2 } from 'lucide-react'; // Modern UI icons
@@ -14,11 +11,9 @@ export default function ChatbotComponent() {
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
-  // 1. Updated ref to target the container itself
   const messagesContainerRef = useRef(null);
   const textareaRef = useRef(null);
 
-  // 2. Updated auto-scroll logic to scroll the container, not the window
   const scrollToBottom = () => {
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTo({
@@ -78,7 +73,6 @@ export default function ChatbotComponent() {
       <div className="chat-blob-2" />
 
       <div className="chat-container">
-        {/* 3. Attached the ref directly to the messages container */}
         <div className="messages-container" ref={messagesContainerRef}>
           {messages.length === 1 && (
             <div className="empty-state">
@@ -95,7 +89,6 @@ export default function ChatbotComponent() {
               <div className="message-content">{message.content}</div>
             </div>
           ))}
-          {/* Removed the empty div that was causing the global scroll bug */}
         </div>
 
         <div className="input-container">
