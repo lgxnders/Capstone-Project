@@ -9,10 +9,12 @@ import userRoutes from './routes/users';
 import authRoutes from './routes/auth';
 
 // Define the port and check to ensure that it is properly read from .env.
-let PORT = 0;
+let PORT;
 try {
-    const PORT = process.env.PORT;
+    PORT = process.env.PORT;
+    
     if (PORT === undefined) throw new Error("Port is undefined.")
+
 } catch (err) {
     console.log('There was an issue assigning the PORT constant a value during server setup.')
     console.log('Please ensure that the .env file in /server/ is present and contains up-to-date information.')
@@ -28,6 +30,8 @@ app.use(express.json());
 app.use('/api/chat', chatRoutes);
 app.use('/api/users', userRoutes);
 app.use('/auth', authRoutes);
+
+console.log(PORT)
 
 // Attempt to connect to database and then listen for requests.
 connectToDB().then( () => {
