@@ -5,7 +5,7 @@ export const sendMessage = async (req: Request, res: Response) => {
 
     // call ai api
 
-    const reply = `Echo: ${message}`;
+    const reply = `DEBUG: The user is currently logged in.`;
 
     res.json({ reply, conversationId });
 };
