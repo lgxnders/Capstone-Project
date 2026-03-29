@@ -1,9 +1,10 @@
 import { Router } from 'express';
 import * as chatController from '../controllers/chat';
+import { requireAuth } from '../middleware/auth';
 
 const router = Router();
 
-router.post('/message', chatController.sendMessage);
-router.get('/history', chatController.getHistory);
+router.post('/message', requireAuth, chatController.sendMessage);
+router.get('/history', requireAuth, chatController.getHistory);
 
 export default router;
