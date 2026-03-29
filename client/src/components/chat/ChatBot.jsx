@@ -32,8 +32,6 @@ export default function ChatbotComponent() {
   const handleSend = async () => {
     if (!inputValue.trim() || isLoading) return;
 
-    console.log("handling send...");
-
     const userMessage = inputValue.trim();
     setInputValue("");
     setMessages((prev) => [...prev, { role: "user", content: userMessage }]);

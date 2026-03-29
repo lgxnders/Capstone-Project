@@ -18,14 +18,9 @@ export async function sendChatMessage(message) {
 
     const data = await res.json();
 
-    console.log("Received token:")
-    console.log(token)
-
-    console.log("Received response data:")
+    console.log("DEBUG: Received response data:")
     console.log(data)
 
-    console.log("Received reply:")
-    console.log(data.reply)
 
     return data.reply;
 }
