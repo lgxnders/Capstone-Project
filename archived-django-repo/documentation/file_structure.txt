@@ -1,7 +1,0 @@
-backend
-... 
-
-frontend
--> components : reusuable ui
--> pages : rendered compositions to be served on routes 
--> services : api calls

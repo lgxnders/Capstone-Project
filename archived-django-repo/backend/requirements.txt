@@ -1,9 +1,0 @@
-cffi==2.0.0
-pycparser==2.23
-pygame==2.6.1
-windows-curses==2.4.1
-Django
-djangorestframework
-djangorestframework-simplejwt
-django-cors-headers
-boto3
