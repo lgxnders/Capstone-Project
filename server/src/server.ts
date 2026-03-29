@@ -34,6 +34,6 @@ app.use('/auth', authRoutes);
 // Attempt to connect to database and then listen for requests.
 connectToDB().then( () => {
     app.listen(PORT, () => {
-        console.log(`Server running at http://localhost:${PORT}`);
+        console.log(`The server is now online at http://localhost:${PORT}`);
     });
 });
