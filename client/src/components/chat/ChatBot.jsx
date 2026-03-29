@@ -1,20 +1,31 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { sendChatMessage } from "../../services/api";
+// Based on the insight provided in the last stakeholders meeting
+
+// rather than using Gemini (preferred, but Gemini remains a strong viable alternative.)
+import React, { useState, useRef, useEffect } from 'react';
+import { sendChatMessage } from '../../services/api';
+import { Bot, User, Send, Loader2 } from 'lucide-react'; // Modern UI icons
 import "./ChatBot.css";
 
+
 export default function ChatbotComponent() {
-  const navigate = useNavigate();
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Hello! How can I help you today?" },
+    { role: 'assistant', content: 'Hello! How can I help you today?' }
   ]);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef(null);
+  
+  // 1. Updated ref to target the container itself
+  const messagesContainerRef = useRef(null);
   const textareaRef = useRef(null);
 
+  // 2. Updated auto-scroll logic to scroll the container, not the window
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTo({
+        top: messagesContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   };
 
   useEffect(() => {
@@ -23,9 +34,9 @@ export default function ChatbotComponent() {
 
   useEffect(() => {
     if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = 'auto';
       textareaRef.current.style.height =
-        Math.min(textareaRef.current.scrollHeight, 120) + "px";
+        Math.min(textareaRef.current.scrollHeight, 120) + 'px';
     }
   }, [inputValue]);
 
@@ -33,31 +44,20 @@ export default function ChatbotComponent() {
     if (!inputValue.trim() || isLoading) return;
 
     const userMessage = inputValue.trim();
-    setInputValue("");
-    setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
+    setInputValue('');
+    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
     setIsLoading(true);
 
     try {
       const response = await sendChatMessage(userMessage);
-      setMessages((prev) => [
+      setMessages(prev => [...prev, { role: 'assistant', content: response }]);
+    } catch {
+      setMessages(prev => [
         ...prev,
-        { role: "assistant", content: response },
-      ]);
-    } catch (err) {
-      let errorMessage = "Sorry, I encountered an error. Please try again.";
-
-      if (err.message === "NOT_LOGGED_IN") {
-        errorMessage = "You need to be logged in to send messages.";
-      } else if (err.message === "UNAUTHORIZED") {
-        errorMessage = "Your session has expired. Please log in again.";
-        navigate("/login");
-      } else if (err.message === "SERVER_ERROR") {
-        errorMessage = "The server encountered an error. Please try again.";
-      }
-
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: errorMessage },
+        {
+          role: 'assistant',
+          content: 'Sorry, I encountered an error. Please try again.'
+        }
       ]);
     } finally {
       setIsLoading(false);
@@ -65,61 +65,59 @@ export default function ChatbotComponent() {
     }
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+  const handleKeyDown = e => {
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSend();
     }
   };
 
   return (
-    <div className="chat-container">
-      <div className="messages-container">
-        {messages.length === 1 && (
-          <div className="empty-state">
-            <h2>How are you feeling today?</h2>
-            <p>
-              You can ask about support resources, coping strategies, or just
-              talk.
-            </p>
-          </div>
-        )}
-        {messages.map((message, index) => (
-          <div key={index} className={`message ${message.role}`}>
-            <div className="message-avatar">
-              {message.role === "assistant" ? "🤖" : "👤"}
-            </div>
-            <div className="message-content">{message.content}</div>
-          </div>
-        ))}
-        {isLoading && (
-          <div className="message assistant">
-            <div className="message-avatar">🤖</div>
-            <div className="message-content">...</div>
-          </div>
-        )}
-        <div ref={messagesEndRef} />
-      </div>
+    <div className="chat-page-wrapper">
+      <div className="chat-blob-1" />
+      <div className="chat-blob-2" />
 
-      <div className="input-container">
-        <div className="input-wrapper">
-          <textarea
-            ref={textareaRef}
-            className="chat-textarea"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Type your message..."
-            rows={1}
-            disabled={isLoading}
-          />
-          <button
-            className="send-button"
-            onClick={handleSend}
-            disabled={!inputValue.trim() || isLoading}
-          >
-            ↑
-          </button>
+      <div className="chat-container">
+        {/* 3. Attached the ref directly to the messages container */}
+        <div className="messages-container" ref={messagesContainerRef}>
+          {messages.length === 1 && (
+            <div className="empty-state">
+              <h2>How are you feeling today?</h2>
+              <p>You can ask about support resources, coping strategies, or just talk.</p>
+            </div>
+          )}
+
+          {messages.map((message, index) => (
+            <div key={index} className={`message ${message.role}`}>
+              <div className="message-avatar">
+                {message.role === 'assistant' ? <Bot size={20} /> : <User size={20} />}
+              </div>
+              <div className="message-content">{message.content}</div>
+            </div>
+          ))}
+          {/* Removed the empty div that was causing the global scroll bug */}
+        </div>
+
+        <div className="input-container">
+          <div className="input-wrapper">
+            <textarea
+              ref={textareaRef}
+              className="chat-textarea"
+              value={inputValue}
+              onChange={e => setInputValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Type your message..."
+              rows={1}
+              disabled={isLoading}
+            />
+            <button
+              className="send-button"
+              onClick={handleSend}
+              disabled={!inputValue.trim() || isLoading}
+            >
+              {isLoading ? <Loader2 className="animate-spin" size={20} /> : <Send size={20} />}
+            </button>
+          </div>
         </div>
       </div>
     </div>
