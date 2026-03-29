@@ -3,17 +3,22 @@
 /* Page Wrapper to hold the background and center the chat */
 .chat-page-wrapper {
     font-family: 'Manrope', sans-serif;
-    background: #f9fafb; /* Matches your homepage */
-    min-height: 100vh;
+    background: #f9fafb;
+    
+    /* Layout Locks - This prevents the global scrollbar */
+    height: 100vh; 
+    padding-top: 80px; /* Clears your header */
+    padding-bottom: 24px;
+    box-sizing: border-box; /* Forces padding to stay inside the 100vh limit */
+    
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     overflow: hidden;
-    padding: 24px;
 }
 
-/* Reusing your Homepage Animations */
+/* Background Animations */
 @keyframes float-blob-1 {
     0%, 100% { transform: translate(0, 0) scale(1); }
     33% { transform: translate(60px, 40px) scale(1.12); }
@@ -55,10 +60,14 @@
 /* Light Mode Glassmorphism Container */
 .chat-container {
     position: relative;
-    z-index: 1; /* Keeps it above the blobs */
+    z-index: 1; 
     width: min(100%, 1000px);
-    height: 85vh;
-    background: rgba(255, 255, 255, 0.75); /* Light glass */
+    
+    /* Dynamic height to fit perfectly in the remaining space */
+    height: calc(100vh - 80px); 
+    max-height: 800px;
+    
+    background: rgba(255, 255, 255, 0.75); 
     border-radius: 24px;
     border: 1px solid rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(24px);
@@ -99,7 +108,7 @@
     font-family: 'Crimson Pro', serif;
     font-size: 32px;
     font-weight: 600;
-    color: #111827; /* Dark text for light mode */
+    color: #111827; 
 }
 
 .empty-state p {
@@ -172,6 +181,7 @@
     border-top-right-radius: 4px;
 }
 
+/* Input Area */
 .input-container {
     padding: 24px 32px;
     background: rgba(255, 255, 255, 0.4);
@@ -207,7 +217,7 @@
     outline: none;
     min-height: 24px;
     max-height: 120px;
-    padding-top: 8px; /* Centers text vertically with the button */
+    padding-top: 8px; 
 }
 
 .chat-textarea::placeholder {
