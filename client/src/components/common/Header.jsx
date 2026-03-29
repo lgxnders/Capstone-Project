@@ -1,16 +1,30 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Header.css";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Check if there is a session token in the local storage.
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    navigate("/login");
+  }
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -30,8 +44,14 @@ const Header = () => {
           <Link to="/about" className="header-link">About</Link>
           <Link to="/admin" className="header-link">Admin</Link>
           <div className="header-divider" />
-          <Link to="/register" className="header-link">Register</Link>
-          <Link to="/login" className="header-cta">Login</Link>
+          {isLoggedIn ? (
+            <button onClick={handleLogout} className="header-cta">Logout</button>
+          ) : (
+            <>
+              <Link to="/register" className="header-link">Register</Link>
+              <Link to="/login" className="header-cta">Login</Link>
+            </>
+          )}
         </nav>
 
         {/* Hamburger */}
@@ -48,11 +68,11 @@ const Header = () => {
 
       {/* Mobile Dropdown */}
       <div className={`header-mobile-menu ${menuOpen ? "header-mobile-menu--open" : ""}`}>
-        <Link to="/chat"     className="header-mobile-link" onClick={closeMenu}>Chatbot</Link>
-        <Link to="/about"    className="header-mobile-link" onClick={closeMenu}>About</Link>
-        <Link to="/admin"    className="header-mobile-link" onClick={closeMenu}>Admin</Link>
+        <Link to="/chat" className="header-mobile-link" onClick={closeMenu}>Chatbot</Link>
+        <Link to="/about" className="header-mobile-link" onClick={closeMenu}>About</Link>
+        <Link to="/admin" className="header-mobile-link" onClick={closeMenu}>Admin</Link>
         <Link to="/register" className="header-mobile-link" onClick={closeMenu}>Register</Link>
-        <Link to="/login"    className="header-mobile-link header-mobile-cta" onClick={closeMenu}>Login</Link>
+        <Link to="/login" className="header-mobile-link header-mobile-cta" onClick={closeMenu}>Login</Link>
       </div>
     </header>
   );

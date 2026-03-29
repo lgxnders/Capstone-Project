@@ -3,6 +3,7 @@
 // rather than using Gemini (preferred, but Gemini remains a strong viable alternative.)
 import React, { useState, useRef, useEffect } from 'react';
 import { sendChatMessage } from '../../services/api';
+import { Bot, User, Send, Loader2 } from 'lucide-react'; // Modern UI icons
 import "./ChatBot.css";
 
 export default function ChatbotComponent() {
@@ -63,49 +64,52 @@ export default function ChatbotComponent() {
   };
 
   return (
-    <div className="chat-container">
+    <div className="chat-page-wrapper">
+      {/* Bringing in the background blobs from the homepage */}
+      <div className="chat-blob-1" />
+      <div className="chat-blob-2" />
 
-      <div className="messages-container">
-        {messages.length === 1 && (
-          <div className="empty-state">
-            <h2>How are you feeling today?</h2>
-            <p>
-              You can ask about support resources, coping strategies, or just talk.
-            </p>
-          </div>
-        )}
-
-        {messages.map((message, index) => (
-          <div key={index} className={`message ${message.role}`}>
-            <div className="message-avatar">
-              {message.role === 'assistant' ? '🤖' : '👤'}
+      <div className="chat-container">
+        <div className="messages-container">
+          {messages.length === 1 && (
+            <div className="empty-state">
+              <h2>How are you feeling today?</h2>
+              <p>You can ask about support resources, coping strategies, or just talk.</p>
             </div>
-            <div className="message-content">{message.content}</div>
+          )}
+
+          {messages.map((message, index) => (
+            <div key={index} className={`message ${message.role}`}>
+              <div className="message-avatar">
+                {message.role === 'assistant' ? <Bot size={20} /> : <User size={20} />}
+              </div>
+              <div className="message-content">{message.content}</div>
+            </div>
+          ))}
+
+          <div ref={messagesEndRef} />
+        </div>
+
+        <div className="input-container">
+          <div className="input-wrapper">
+            <textarea
+              ref={textareaRef}
+              className="chat-textarea"
+              value={inputValue}
+              onChange={e => setInputValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Type your message..."
+              rows={1}
+              disabled={isLoading}
+            />
+            <button
+              className="send-button"
+              onClick={handleSend}
+              disabled={!inputValue.trim() || isLoading}
+            >
+              {isLoading ? <Loader2 className="animate-spin" size={20} /> : <Send size={20} />}
+            </button>
           </div>
-        ))}
-
-        <div ref={messagesEndRef} />
-      </div>
-
-      <div className="input-container">
-        <div className="input-wrapper">
-          <textarea
-            ref={textareaRef}
-            className="chat-textarea"
-            value={inputValue}
-            onChange={e => setInputValue(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Type your message..."
-            rows={1}
-            disabled={isLoading}
-          />
-          <button
-            className="send-button"
-            onClick={handleSend}
-            disabled={!inputValue.trim() || isLoading}
-          >
-            ↑
-          </button>
         </div>
       </div>
     </div>
