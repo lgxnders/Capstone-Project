@@ -6,7 +6,7 @@ import "./ChatBot.css";
 
 export default function ChatbotComponent() {
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Hello! How can I help you today?' }
+      { role: 'assistant', content: 'Hello! How can I help you today?' }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -46,14 +46,24 @@ export default function ChatbotComponent() {
     try {
       const response = await sendChatMessage(userMessage);
       setMessages(prev => [...prev, { role: 'assistant', content: response }]);
-    } catch {
+    
+    } catch (err) {
+      let errorMessage = "Sorry, I encountered an error. Please try again.";
+
+      if (err.message === "NOT_LOGGED_IN") {
+          errorMessage = "DEBUG: You need to be logged in to send messages.";
+      } else if (err.message === "UNAUTHORIZED") {
+          errorMessage = "Your session has expired. Please log in again.";
+          navigate("/login");
+      } else if (err.message === "SERVER_ERROR") {
+          errorMessage = "The server encountered an error. Please try again.";
+      }
+
       setMessages(prev => [
-        ...prev,
-        {
-          role: 'assistant',
-          content: 'Sorry, I encountered an error. Please try again.'
-        }
+          ...prev,
+          { role: "assistant", content: errorMessage },
       ]);
+
     } finally {
       setIsLoading(false);
       textareaRef.current?.focus();
