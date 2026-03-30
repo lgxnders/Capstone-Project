@@ -1,0 +1,55 @@
+[
+  {
+    "id": "bd72acf8-e31c-45aa-bcf0-bc8e7764c43b",
+    "title": "Depression - National Institute of Mental Health",
+    "url": "https://www.nimh.nih.gov/health/topics/depression",
+    "description": "Learn about NIMH research on depression. Find resources on the signs and symptoms of depression, types, and potential treatments and therapies.",
+    "type": "article",
+    "topics": [
+      "depression",
+      "postpartum depression"
+    ],
+    "tags": [
+      "government",
+      "research",
+      "studies"
+    ],
+    "targetStates": [
+      "feeling sad",
+      "feeling low",
+      "can't eat"
+    ],
+    "timeEstimate": 10,
+    "accessLevel": "low",
+    "credibilityLevel": "high",
+    "embedding": []
+  },
+  {
+    "id": "61fcba3c-b27a-48f2-9cad-9ef0c312eb9f",
+    "title": "Understanding and Finding Help for Depression - CMHA",
+    "url": "https://ontario.cmha.ca/documents/understanding-and-finding-help-for-depression/",
+    "description": "Learn about depression and how to find help for children and teens in Ontario.",
+    "type": "article",
+    "topics": [
+      "depression",
+      "finding help",
+      "understanding depression"
+    ],
+    "tags": [
+      "understanding",
+      "mental health",
+      "feeling sad",
+      "finding help",
+      "getting help"
+    ],
+    "targetStates": [
+      "depressed",
+      "unable to get out of bed",
+      "feeling worthless"
+    ],
+    "timeEstimate": 788,
+    "accessLevel": "med",
+    "credibilityLevel": "high",
+    "embedding": []
+  }
+]
