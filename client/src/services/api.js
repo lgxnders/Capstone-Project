@@ -1,7 +1,7 @@
 //const API_BASE = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
 const API_BASE = "http://127.0.0.1:8000/api";
 
-export async function sendChatMessage(message) {
+export async function sendChatMessage(message, conversationId = null) {
     const token = localStorage.getItem("token");
 
     if (!token) throw new Error("NOT_LOGGED_IN");
@@ -12,7 +12,7 @@ export async function sendChatMessage(message) {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({ message, conversationId }),
     });
     
 
@@ -22,5 +22,5 @@ export async function sendChatMessage(message) {
     console.log(data)
 
 
-    return data.reply;
+    return { reply: data.reply, conversationId: data.conversationId };
 }
