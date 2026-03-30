@@ -1,7 +1,9 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import type { Conversation } from '../types/chat';
 
-export type ConversationDocument = Conversation & Document;
+export type ConversationDocument = Omit<Conversation, 'messages'> & Document & {
+    messages: mongoose.Types.ObjectId[];
+};
 
 const ConversationSchema = new Schema<ConversationDocument>({
     userId:     { type: Number, required: true },
