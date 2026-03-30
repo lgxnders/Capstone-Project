@@ -9,14 +9,12 @@ const resourceFile = path.join(__dirname, "../../data/resources.json");
 
 const loadResources = (): Resource[] => {
     if (!fs.existsSync(resourceFile)) {
-        // If the file doesn't exist, then create it.
         fs.writeFileSync(resourceFile, "[]", "utf-8");
         return [];
     }
 
     const content = fs.readFileSync(resourceFile, "utf-8").trim();
     if (!content) {
-        // if the file is empty, give it brackets to set it up as a JSON file.
         fs.writeFileSync(resourceFile, "[]", "utf-8");
         return [];
     }
