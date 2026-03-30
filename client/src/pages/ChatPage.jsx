@@ -5,7 +5,7 @@ import Footer from "../components/common/Footer";
 export default function ChatPage() {
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <ChatBot />
       <Footer />
     </div>

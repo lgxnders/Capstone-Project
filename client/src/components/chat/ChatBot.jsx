@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { sendChatMessage } from '../../services/api';
-import { Bot, User, Send, Loader2 } from 'lucide-react'; // Modern UI icons
+import { Bot, User, Send, Loader2 } from 'lucide-react';
+import Header from '../common/Header';
 import "./ChatBot.css";
 
 
@@ -81,6 +82,8 @@ export default function ChatbotComponent() {
     <div className="chat-page-wrapper">
       <div className="chat-blob-1" />
       <div className="chat-blob-2" />
+
+      <Header />
 
       <div className="chat-container">
         <div className="messages-container" ref={messagesContainerRef}>
