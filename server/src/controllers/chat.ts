@@ -13,12 +13,22 @@ export const sendMessage = async (req: AuthRequest, res: Response) => {
     if (!userId) return res.status(401).json({ error: 'Unauthorized' });
 
     try { // try to find an existing chat conversation or create a new one.
-        let conversation = conversationId
-            ? await ConversationModel.findById(conversationId).populate('messages')
-            : null;
+        let conversation = null;
+
+        if (conversationId) {
+            try {
+                conversation = await ConversationModel.findById(conversationId).populate('messages')
+            } catch {
+                throw new Error("Invalid ObjectId format. No conversation could be found.");
+            }
+        }
 
         if (!conversation) {
             conversation = await ConversationModel.create({ userId, messages: [] });
+        }
+
+        if (!conversation) {
+            return res.status(500).json({ error: 'Failed to create conversation/' });
         }
 
 

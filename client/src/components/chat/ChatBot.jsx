@@ -14,6 +14,9 @@ export default function ChatbotComponent() {
   
   const messagesContainerRef = useRef(null);
   const textareaRef = useRef(null);
+  
+  const conversationIdRef = useRef(null)
+
 
   const scrollToBottom = () => {
     if (messagesContainerRef.current) {
@@ -45,8 +48,10 @@ export default function ChatbotComponent() {
     setIsLoading(true);
 
     try {
-      const response = await sendChatMessage(userMessage);
-      setMessages(prev => [...prev, { role: 'assistant', content: response }]);
+      const response = await sendChatMessage(userMessage, conversationIdRef.current);
+      conversationIdRef.current = response.conversationId;
+
+      setMessages(prev => [...prev, { role: 'assistant', content: response.reply }]);
     
     } catch (err) {
       let errorMessage = "Sorry, I encountered an error. Please try again.";
