@@ -7,6 +7,7 @@ import { connectToDB } from './database';
 import chatRoutes from './routes/chat';
 import userRoutes from './routes/users';
 import authRoutes from './routes/auth';
+import resourceRoutes from './routes/resources';
 
 // Define the port and check to ensure that it is properly read from .env.
 let PORT;
@@ -30,6 +31,7 @@ app.use(express.json());
 app.use('/api/chat', chatRoutes);
 app.use('/api/users', userRoutes);
 app.use('/auth', authRoutes);
+app.use('/api/resources', resourceRoutes);
 
 // Attempt to connect to database and then listen for requests.
 connectToDB().then( () => {
