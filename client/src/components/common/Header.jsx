@@ -37,10 +37,12 @@ const Header = () => {
         <nav className="header-nav">
           <Link to="/chat" className="header-link">Chatbot</Link>
           <Link to="/about" className="header-link">About</Link>
+          <Link to="/BookmarkedListPage" className="header-link">Bookmark List</Link>
           {isAdmin && <Link to="/admin" className="header-link">Admin</Link>}
           <div className="header-divider" />
           {isLoggedIn ? (
             <button onClick={handleLogout} className="header-cta">Logout</button>
+            
           ) : (
             <>
               <Link to="/register" className="header-link">Register</Link>

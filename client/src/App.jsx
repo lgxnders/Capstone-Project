@@ -8,6 +8,7 @@ import RegisterPage from "./pages/RegisterPage";
 import AdminPage from "./pages/AdminPage";
 import AboutPage from "./pages/AboutPage";
 import ResourceDetailsPage from "./pages/ResourceDetailsPage";
+import BookmarkedListPage from "./pages/BookmarkedListPage";
 import useAuth from "./hooks/useAuth";
 
 function AdminRoute({ children }) {
@@ -31,7 +32,7 @@ function App() {
     <>
       {showSplash && (
         <SplashScreen onFinished={() => setShowSplash(false)} />
-      )}
+        )}
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -41,6 +42,7 @@ function App() {
           <Route path="/admin" element={<AdminRoute><AdminPage /></AdminRoute>} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/resources/:id" element={<ResourceDetailsPage />} />
+          <Route path="/BookmarkedListPage" element={<BookmarkedListPage />} />
         </Routes>
       </BrowserRouter>
     </>
