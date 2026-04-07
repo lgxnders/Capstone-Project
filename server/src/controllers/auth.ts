@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 import { UserModel } from '../models/User';
+import type { AuthRequest } from '../middleware/auth';
 
 const JWT_SECRET = (process.env.JWT_SECRET || 'dev_secret') as string; // infer to string
 const SALT_ROUNDS = 8;
@@ -28,11 +29,12 @@ export const register = async (req: Request, res: Response) => {
 
         const newUser = new UserModel({
             userId: userCount + 1,
-            username, 
+            username,
             email,
             passwordHash,
             firstName,
             lastName,
+            role: 'user',
             conversations: [],
         });
 
@@ -63,7 +65,7 @@ export const login = async (req: Request, res: Response) => {
         }
 
         const token = jwt.sign(
-            { userId: user.userId, email: user.email },
+            { userId: user.userId, email: user.email, role: user.role },
             JWT_SECRET,
             { expiresIn: '7d' }
         );
@@ -73,4 +75,16 @@ export const login = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(500).json({ error: 'Login failed' });
     }
+};
+
+export const me = async (req: AuthRequest, res: Response) => {
+    if (!req.user) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    res.json({
+        userId: req.user.userId,
+        email: req.user.email,
+        role: req.user.role,
+    });
 };

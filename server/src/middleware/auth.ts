@@ -10,6 +10,7 @@ if (!JWT_SECRET) {
 export interface AuthPayload extends JwtPayload {
     userId: number;
     email: string;
+    role: 'user' | 'admin';
 }
 
 export interface AuthRequest extends Request {
@@ -40,4 +41,18 @@ export const requireAuth = (req: AuthRequest, res: Response, next: NextFunction)
         req.user = decoded as AuthPayload;
         next();
     });
+};
+
+export const requireAdmin = (req: AuthRequest, res: Response, next: NextFunction): void => {
+    if (!req.user) {
+        res.status(401).json({ error: 'Unauthorized.' });
+        return;
+    }
+
+    if (req.user.role !== 'admin') {
+        res.status(403).json({ error: 'Admin access required.' });
+        return;
+    }
+
+    next();
 };

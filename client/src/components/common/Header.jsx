@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 import "./Header.css";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,15 +15,9 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Check if there is a session token in the local storage.
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
-  }, []);
-
   const handleLogout = () => {
     localStorage.removeItem("token");
-    setIsLoggedIn(false);
+    window.dispatchEvent(new Event('authchange'));
     navigate("/login");
   }
 
@@ -42,7 +37,7 @@ const Header = () => {
         <nav className="header-nav">
           <Link to="/chat" className="header-link">Chatbot</Link>
           <Link to="/about" className="header-link">About</Link>
-          <Link to="/admin" className="header-link">Admin</Link>
+          {isAdmin && <Link to="/admin" className="header-link">Admin</Link>}
           <div className="header-divider" />
           {isLoggedIn ? (
             <button onClick={handleLogout} className="header-cta">Logout</button>
@@ -70,9 +65,13 @@ const Header = () => {
       <div className={`header-mobile-menu ${menuOpen ? "header-mobile-menu--open" : ""}`}>
         <Link to="/chat" className="header-mobile-link" onClick={closeMenu}>Chatbot</Link>
         <Link to="/about" className="header-mobile-link" onClick={closeMenu}>About</Link>
-        <Link to="/admin" className="header-mobile-link" onClick={closeMenu}>Admin</Link>
-        <Link to="/register" className="header-mobile-link" onClick={closeMenu}>Register</Link>
-        <Link to="/login" className="header-mobile-link header-mobile-cta" onClick={closeMenu}>Login</Link>
+        {isAdmin && <Link to="/admin" className="header-mobile-link" onClick={closeMenu}>Admin</Link>}
+        {!isLoggedIn && (
+          <>
+            <Link to="/register" className="header-mobile-link" onClick={closeMenu}>Register</Link>
+            <Link to="/login" className="header-mobile-link header-mobile-cta" onClick={closeMenu}>Login</Link>
+          </>
+        )}
       </div>
     </header>
   );

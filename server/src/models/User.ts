@@ -10,6 +10,7 @@ const UserSchema = new Schema<UserDocument>({
     passwordHash:   { type: String, required: true },
     firstName:      { type: String },
     lastName:       { type: String },
+    role:           { type: String, enum: ['user', 'admin'], default: 'user' },
     conversations: [{ type: Schema.Types.ObjectId, ref: 'Conversation' }],
     createdAt:      { type: Date, default: Date.now },
 });

@@ -31,6 +31,7 @@ export default function LoginPage() {
 
       if (response.ok) {
         localStorage.setItem("token", data.token);
+        window.dispatchEvent(new Event('authchange'));
         navigate("/chat");
       } else {
         setError(data.error || "Invalid credentials. Please try again.");
