@@ -36,7 +36,13 @@ export const emitAuthChange = () => {
 };
 
 export default function useAuth() {
-    const [state, setState] = useState({ isLoggedIn: false, isAdmin: false, user: null });
+    // decode token synchronously.
+    const initialPayload = getAuthPayload();
+    const [state, setState] = useState({
+        isLoggedIn: !!initialPayload,
+        isAdmin: initialPayload?.role === 'admin',
+        user: initialPayload ? { userId: initialPayload.userId, email: initialPayload.email, role: initialPayload.role } : null,
+    });
 
     useEffect(() => {
         const updateState = () => {
@@ -48,7 +54,6 @@ export default function useAuth() {
             });
         };
 
-        updateState();
         window.addEventListener('storage', updateState);
         window.addEventListener(AUTH_EVENT, updateState);
 

@@ -25,10 +25,13 @@ export const register = async (req: Request, res: Response) => {
         }
 
         const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
-        const userCount = await UserModel.countDocuments();
+        
+        // find the max userId to get the next available ID. this prevents errors if a user is deleted.
+        const maxUserIdDoc = await UserModel.findOne({}, {}, { sort: { userId: -1 } });
+        const nextUserId = (maxUserIdDoc?.userId || 0) + 1;
 
         const newUser = new UserModel({
-            userId: userCount + 1,
+            userId: nextUserId,
             username,
             email,
             passwordHash,
