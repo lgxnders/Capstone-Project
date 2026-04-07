@@ -42,3 +42,13 @@ export async function fetchRandomResource() {
     const data = await res.json();
     return data.resource;
 }
+
+
+export async function fetchResourceById(id) {
+    const res = await fetch(`${API_BASE}/resources/${id}`);
+
+    if (!res.ok) throw new Error("Failed to fetch resource");
+
+    const data = await res.json();
+    return data.resource;
+}

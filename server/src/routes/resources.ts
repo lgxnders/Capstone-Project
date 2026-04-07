@@ -5,5 +5,6 @@ const router = Router();
 
 router.get('/', resourceController.getAllResources);
 router.get('/random', resourceController.getRandomResource);
+router.get('/:id', resourceController.getResourceById);
 
 export default router;
