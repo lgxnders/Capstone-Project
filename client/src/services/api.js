@@ -24,3 +24,31 @@ export async function sendChatMessage(message, conversationId = null) {
 
     return { reply: data.reply, conversationId: data.conversationId };
 }
+
+export async function fetchAllResources() {
+    const res = await fetch(`${API_BASE}/resources`);
+
+    if (!res.ok) throw new Error("Failed to fetch resources");
+
+    const data = await res.json();
+    return data.resources;
+}
+
+export async function fetchRandomResource() {
+    const res = await fetch(`${API_BASE}/resources/random`);
+
+    if (!res.ok) throw new Error("Failed to fetch random resource");
+
+    const data = await res.json();
+    return data.resource;
+}
+
+
+export async function fetchResourceById(id) {
+    const res = await fetch(`${API_BASE}/resources/${id}`);
+
+    if (!res.ok) throw new Error("Failed to fetch resource");
+
+    const data = await res.json();
+    return data.resource;
+}
