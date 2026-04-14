@@ -3,9 +3,14 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 import { UserModel } from '../models/User';
+import { CounterModel } from '../models/Counter';
 import type { AuthRequest } from '../middleware/auth';
 
-const JWT_SECRET = (process.env.JWT_SECRET || 'dev_secret') as string; // infer to string
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+    throw new Error('JWT_SECRET environment variable is not set.');
+}
 const SALT_ROUNDS = 8;
 
 export const register = async (req: Request, res: Response) => {
@@ -26,9 +31,13 @@ export const register = async (req: Request, res: Response) => {
 
         const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
         
-        // find the max userId to get the next available ID. this prevents errors if a user is deleted.
-        const maxUserIdDoc = await UserModel.findOne({}, {}, { sort: { userId: -1 } });
-        const nextUserId = (maxUserIdDoc?.userId || 0) + 1;
+        // atomically increment the userId counter to get the next available ID.
+        const counterDoc = await CounterModel.findOneAndUpdate(
+            { _id: 'userId' },
+            { $inc: { seq: 1 } },
+            { new: true, upsert: true }
+        );
+        const nextUserId = counterDoc!.seq;
 
         const newUser = new UserModel({
             userId: nextUserId,

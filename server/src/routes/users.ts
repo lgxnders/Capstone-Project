@@ -6,6 +6,7 @@ const router = Router();
 
 router.get('/:id', requireAuth, userController.getUser);
 router.patch('/:id', requireAuth, userController.updateUser);
+router.patch('/:id/role', requireAuth, requireAdmin, userController.updateUserRole);
 router.delete('/:id', requireAuth, requireAdmin, userController.deleteUser);
 
 export default router;

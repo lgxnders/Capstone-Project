@@ -11,7 +11,8 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "add-resource": "ts-node src/helpers/addResource.ts",
-    "save-resources": "ts-node src/helpers/saveResource.ts"
+    "save-resources": "ts-node src/helpers/saveResource.ts",
+    "seed-counters": "ts-node src/helpers/seedCounters.ts"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",

@@ -1,6 +1,6 @@
 const BASE_URL = "http://127.0.0.1:8000";
 const API_BASE = `${BASE_URL}/api`;
-const AUTH_BASE = `${BASE_URL}/auth`;
+const AUTH_BASE = `${BASE_URL}/api/auth`;
 
 export async function sendChatMessage(message, conversationId = null) {
     const token = localStorage.getItem("token");

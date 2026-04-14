@@ -5,8 +5,6 @@ export const getConversationHistory = async (conversationId: string) => {
         .findById(conversationId)
         .populate('messages');
 
-    console.log(conversation)
-    
     return conversation?.messages ?? [];
 };
 

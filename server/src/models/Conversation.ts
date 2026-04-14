@@ -6,7 +6,7 @@ export type ConversationDocument = Omit<Conversation, 'messages'> & Document & {
 };
 
 const ConversationSchema = new Schema<ConversationDocument>({
-    userId:     { type: Number, required: true },
+    userId:     { type: Number, required: true, index: true },
     messages:  [{ type: Schema.Types.ObjectId, ref: 'ChatMessage'}],
     createdAt:  { type: Date, default: Date.now },
     updatedAt:  { type: Date, default: Date.now },

@@ -18,7 +18,6 @@ export interface NewUser {
     password:       string;
     firstName?:     string;
     lastName?:      string;
-    role?:          'user' | 'admin';
 }
 
 // PublicUser has all the fields of a NewUser, except for the 'conversations' field.
