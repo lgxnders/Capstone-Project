@@ -7,14 +7,14 @@ import "./ChatBot.css";
 
 export default function ChatbotComponent() {
   const [messages, setMessages] = useState([
-      { role: 'assistant', content: 'Hello! How can I help you today?' }
+    { role: 'assistant', content: 'Hello! How can I help you today?' }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const messagesContainerRef = useRef(null);
   const textareaRef = useRef(null);
-  
+
   const conversationIdRef = useRef(null)
 
 
@@ -52,22 +52,22 @@ export default function ChatbotComponent() {
       conversationIdRef.current = response.conversationId;
 
       setMessages(prev => [...prev, { role: 'assistant', content: response.reply }]);
-    
+
     } catch (err) {
       let errorMessage = "Sorry, I encountered an error. Please try again.";
 
       if (err.message === "NOT_LOGGED_IN") {
-          errorMessage = "DEBUG: You need to be logged in to send messages.";
+        errorMessage = "DEBUG: You need to be logged in to send messages.";
       } else if (err.message === "UNAUTHORIZED") {
-          errorMessage = "Your session has expired. Please log in again.";
-          navigate("/login");
+        errorMessage = "Your session has expired. Please log in again.";
+        navigate("/login");
       } else if (err.message === "SERVER_ERROR") {
-          errorMessage = "The server encountered an error. Please try again.";
+        errorMessage = "The server encountered an error. Please try again.";
       }
 
       setMessages(prev => [
-          ...prev,
-          { role: "assistant", content: errorMessage },
+        ...prev,
+        { role: "assistant", content: errorMessage },
       ]);
 
     } finally {
