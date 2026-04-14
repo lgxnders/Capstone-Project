@@ -32,7 +32,7 @@ function App() {
     <>
       {showSplash && (
         <SplashScreen onFinished={() => setShowSplash(false)} />
-        )}
+      )}
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
