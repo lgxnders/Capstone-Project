@@ -1,5 +1,5 @@
-import type { Request, Response } from 'express';
-import type { AuthRequest} from '../middleware/auth';
+import type { Response } from 'express';
+import type { AuthRequest } from '../middleware/auth';
 import { ConversationModel } from '../models/Conversation';
 import { ChatMessageModel } from '../models/ChatMessage';
 import { getConversationHistory, formatMessagesForAI } from '../services/conversation';
@@ -28,7 +28,7 @@ export const sendMessage = async (req: AuthRequest, res: Response) => {
         }
 
         if (!conversation) {
-            return res.status(500).json({ error: 'Failed to create conversation/' });
+            return res.status(500).json({ error: 'Failed to create conversation' });
         }
 
 
@@ -41,14 +41,14 @@ export const sendMessage = async (req: AuthRequest, res: Response) => {
 
         // construct user message
         const userMessage = await ChatMessageModel.create({
-            conversationId: conversation._id.toString(),
+            conversationId: conversation._id,
             role: 'user',
             content: message,
         });
 
         // construct chatbot reply
         const assistantMessage = await ChatMessageModel.create({
-            conversationId: conversation._id.toString(),
+            conversationId: conversation._id,
             role: 'assistant',
             content: replyContent,
         });
@@ -64,12 +64,6 @@ export const sendMessage = async (req: AuthRequest, res: Response) => {
             { $addToSet: { conversations: conversation._id } }
         );
 
-        //DEBUG TO SERVER CONSOLE
-        ConversationModel.findById(conversation._id)
-            .populate('messages')
-            .then(doc => console.log(JSON.stringify(doc, null, 2)));
-
-
         res.json({ reply: replyContent, conversationId: conversation._id });
         
     } catch (error) {
@@ -78,7 +72,7 @@ export const sendMessage = async (req: AuthRequest, res: Response) => {
     }
 };
 
-export const getHistory = async (req: Request, res: Response) => {
+export const getHistory = async (req: AuthRequest, res: Response) => {
     const { conversationId } = req.query;
 
     if (!conversationId) return res.status(400).json({ error: 'conversationId is required' });
@@ -90,6 +84,10 @@ export const getHistory = async (req: Request, res: Response) => {
 
         if (!conversation) {
             return res.status(404).json({ error: 'Conversation not found' });
+        }
+
+        if (conversation.userId !== req.user?.userId) {
+            return res.status(403).json({ error: 'Forbidden' });
         }
 
         res.json({ messages: conversation.messages });

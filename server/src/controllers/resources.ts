@@ -31,14 +31,17 @@ export const getResourceById = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     try {
-        const resource = await ResourceModel.findOne({ id: id } as any).select('-embedding');
+        const resource = await ResourceModel.findById(id).select('-embedding');
 
         if (!resource) {
             return res.status(404).json({ error: 'Resource not found' });
         }
 
         res.json({ resource });
-    } catch (error) {
+    } catch (error: any) {
+        if (error.name === 'CastError') {
+            return res.status(400).json({ error: 'Invalid resource ID' });
+        }
         console.error('getResourceById error:', error);
         res.status(500).json({ error: 'Failed to fetch resource' });
     }
