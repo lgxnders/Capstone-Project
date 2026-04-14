@@ -3,7 +3,7 @@ export interface Resource {
         Represents a resource item that can be recommended by
         the chatbot to a user based on context and preferences.
     */
-    id?:            string; // legacy field from JSON seed data; not stored in MongoDB
+    id?:            string;
     title:          string;    // Human-readable title to be displayed in front-end.
     url:            string;    // Link to the resource, article, tool, etc.
     description:    string;    // A short description explaining what the resource offers.
