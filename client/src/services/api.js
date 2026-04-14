@@ -1,5 +1,6 @@
-//const API_BASE = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
-const API_BASE = "http://127.0.0.1:8000/api";
+const BASE_URL = "http://127.0.0.1:8000";
+const API_BASE = `${BASE_URL}/api`;
+const AUTH_BASE = `${BASE_URL}/auth`;
 
 export async function sendChatMessage(message, conversationId = null) {
     const token = localStorage.getItem("token");
@@ -9,12 +10,12 @@ export async function sendChatMessage(message, conversationId = null) {
     const res = await fetch(`${API_BASE}/chat/message`, {
         method: "POST",
         headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({ message, conversationId }),
     });
-    
+
 
     const data = await res.json();
 
@@ -51,4 +52,26 @@ export async function fetchResourceById(id) {
 
     const data = await res.json();
     return data.resource;
+}
+
+export async function login(email, password) {
+    const res = await fetch(`${AUTH_BASE}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+    });
+
+    const data = await res.json();
+    return { ok: res.ok, data };
+}
+
+export async function register(formData) {
+    const res = await fetch(`${AUTH_BASE}/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+    });
+
+    const data = await res.json();
+    return { ok: res.ok, data };
 }
