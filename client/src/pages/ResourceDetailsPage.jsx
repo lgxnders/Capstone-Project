@@ -8,7 +8,7 @@ export default function ResourceDetailsPage() {
   const { id } = useParams();
   const [resource, setResource] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [Bookmarked, setBookmarked] = useState(false);
+  const [bookmarked, setBookmarked] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -16,6 +16,11 @@ export default function ResourceDetailsPage() {
       try {
         const data = await fetchResourceById(id);
         setResource(data);
+        const savedBookmarks = JSON.parse(
+          localStorage.getItem("bookmarks") || "[]",
+        );
+        const isBookmarked = savedBookmarks.some((item) => item._id === id);
+        setBookmarked(isBookmarked);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -25,6 +30,19 @@ export default function ResourceDetailsPage() {
 
     getResource();
   }, [id]);
+
+  const handleBookmarkToggle = () => {
+    let savedBookmarks = JSON.parse(localStorage.getItem("bookmarks") || "[]");
+
+    if (bookmarked) {
+      savedBookmarks = savedBookmarks.filter((item) => item._id !== id);
+    } else {
+      savedBookmarks.push(resource);
+    }
+
+    localStorage.setItem("bookmarks", JSON.stringify(savedBookmarks));
+    setBookmarked(!bookmarked);
+  };
 
   if (loading)
     return (
@@ -45,10 +63,14 @@ export default function ResourceDetailsPage() {
         display: "flex",
         flexDirection: "column",
         background: "#f9fafb",
+        position: "relative", // Ensure the container is the relative parent for absolute blobs
+        overflow: "hidden",   // Keep the blobs from creating scrollbars
       }}
     >
+      <div className="home-blob-1" />
+      <div className="home-blob-2" />
+    
       <Header />
-
       <main
         style={{
           flex: 1,
@@ -59,6 +81,8 @@ export default function ResourceDetailsPage() {
           borderRadius: "16px",
           boxShadow: "0 4px 6px rgba(0,0,0,0.05)",
           width: "90%",
+          zIndex: 1, // Explicitly pull the content above the blobs
+          position: "relative",
         }}
       >
         <Link
@@ -75,7 +99,6 @@ export default function ResourceDetailsPage() {
         <h1 style={{ marginTop: "24px", color: "#1f2937" }}>
           {resource.title}
         </h1>
-
         <div style={{ display: "flex", gap: "10px", marginBottom: "24px" }}>
           <span
             style={{
@@ -134,40 +157,38 @@ export default function ResourceDetailsPage() {
             Visit Resource
           </a>
 
-          {/* button for the bookmark implementation */}
           <button
             style={{
               display: "flex",
               alignItems: "center",
               gap: "8px",
               padding: "12px 24px",
-              border: Bookmarked ? "2px solid #7c3aed" : "2px solid #e5e7eb",
-              background: Bookmarked
+              border: bookmarked ? "2px solid #7c3aed" : "2px solid #e5e7eb",
+              background: bookmarked
                 ? "linear-gradient(135deg, #4f46e5, #7c3aed)"
                 : "transparent",
               borderRadius: "8px",
               cursor: "pointer",
               fontWeight: "600",
-              color: Bookmarked ? "white" : "#4b5563",
+              color: bookmarked ? "white" : "#4b5563",
               transition: "all 0.2s ease",
             }}
-            onClick={() => setBookmarked(!Bookmarked)}
+            onClick={handleBookmarkToggle}
           >
             <svg
               width="18"
               height="18"
               viewBox="0 0 24 24"
-              fill={Bookmarked ? "white" : "none"}
-              stroke={Bookmarked ? "white" : "currentColor"}
+              fill={bookmarked ? "white" : "none"}
+              stroke={bookmarked ? "white" : "currentColor"}
               strokeWidth="2"
             >
               <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
             </svg>
-            {Bookmarked ? "Bookmarked" : "Bookmark"}
+            {bookmarked ? "Bookmarked" : "Bookmark"}
           </button>
         </div>
       </main>
-
       <Footer />
     </div>
   );
