@@ -5,6 +5,9 @@ import { ChatMessageModel } from '../models/ChatMessage';
 import { getConversationHistory, formatMessagesForAI } from '../services/conversation';
 import { UserModel } from '../models/User';
 import mongoose from 'mongoose';
+import { psychologistAgent, CRISIS_RESPONSE } from '../agents/psychologistAgent';
+import { patientAgent, ApiError } from '../agents/patientAgent';
+import { runResourceDag } from '../agents/resourceDag';
 
 export const sendMessage = async (req: AuthRequest, res: Response) => {
     const { message, conversationId } = req.body;
@@ -34,9 +37,43 @@ export const sendMessage = async (req: AuthRequest, res: Response) => {
 
         const formattedHistory = formatMessagesForAI(conversation.messages as any[]);
 
-        const replyContent = "reply DEBUG";
-        // CALL AI HERE TO DEFINE replyContent.
-        // use formattedHistory.
+        // --- Agent orchestration ---
+
+        // Step 1: psychologist agent screens the message for red flags.
+        const psychResult = await psychologistAgent(message);
+
+        // Step 2: if flagged, use the crisis response and skip the patient agent.
+        // Step 3: if clear, patient agent generates the empathetic reply.
+        let replyContent: string;
+        if (psychResult.flagged) {
+            replyContent = CRISIS_RESPONSE;
+        } else {
+            replyContent = await patientAgent(formattedHistory, message);
+        }
+
+        // Step 4: resource DAG runs on both paths to select resources + suggested prompts.
+        const { resources, internalResources, suggestedPrompts } = await runResourceDag({
+            userMessage:         message,
+            patientReply:        psychResult.flagged ? '' : replyContent,
+            conversationHistory: formattedHistory,
+            psychologistResult:  psychResult,
+        });
+
+        // Append resource URLs to the reply for the frontend to display inline.
+        if (internalResources.length > 0) {
+            const resourceLines = internalResources
+                .map((r) => `${r.title}: ${r.url}`)
+                .join(' | ');
+            replyContent += ` Here are some resources that may help: ${resourceLines}`;
+        } else if (resources.length > 0) {
+            const resourceLines = resources
+                .map((r) => `${r.label}: ${r.url}`)
+                .join(' | ');
+            replyContent += ` Here are some resources that may help: ${resourceLines}`;
+        }
+
+        const flagged      = psychResult.flagged;
+        const flagCategory = psychResult.category;
 
 
         // construct user message
@@ -44,6 +81,8 @@ export const sendMessage = async (req: AuthRequest, res: Response) => {
             conversationId: conversation._id,
             role: 'user',
             content: message,
+            flagged,
+            ...(flagCategory !== undefined && { flagCategory }),
         });
 
         // construct chatbot reply
@@ -64,10 +103,13 @@ export const sendMessage = async (req: AuthRequest, res: Response) => {
             { $addToSet: { conversations: conversation._id } }
         );
 
-        res.json({ reply: replyContent, conversationId: conversation._id });
+        res.json({ reply: replyContent, conversationId: conversation._id, resources, suggestedPrompts });
         
     } catch (error) {
         console.error('sendMessage error:', error);
+        if (error instanceof ApiError) {
+            return res.status(503).json({ error: error.message });
+        }
         res.status(500).json({ error: 'Failed to send message' });
     }
 };
