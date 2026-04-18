@@ -6,6 +6,8 @@ export interface ChatMessage {
     role:           MessageRole;
     content:        string;
     timestamp:      Date;
+    flagged?:       boolean;  // true if psychologist agent raised a red flag
+    flagCategory?:  string;   // the category returned by the psychologist agent
 }
 
 export interface Conversation {
