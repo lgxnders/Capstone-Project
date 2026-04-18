@@ -8,7 +8,7 @@ To run the web application locally, you will need to start both the front-end an
 	`npm run dev`
 
 # Back-End:
-	`cd client`
+	`cd server`
 	`npm install`
 	`npm run dev`
 	Note: Ensure that the .env file has been placed in the server/src/ directory.
