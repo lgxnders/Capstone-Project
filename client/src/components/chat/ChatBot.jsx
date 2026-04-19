@@ -51,24 +51,27 @@ export default function ChatbotComponent() {
       const response = await sendChatMessage(userMessage, conversationIdRef.current);
       conversationIdRef.current = response.conversationId;
 
-      setMessages(prev => [...prev, { role: 'assistant', content: response.reply }]);
+      const allResources = [
+        ...(response.internalResources ?? []).map(r => ({ label: r.title, url: r.url, description: r.description })),
+        ...(response.resources ?? []),
+      ];
+
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: response.reply,
+        resources: allResources.length > 0 ? allResources : undefined,
+      }]);
 
     } catch (err) {
-      let errorMessage = "Sorry, I encountered an error. Please try again.";
-
       if (err.message === "NOT_LOGGED_IN") {
-        errorMessage = "DEBUG: You need to be logged in to send messages.";
+        setMessages(prev => [...prev, { role: "assistant", content: "You need to be logged in to send messages." }]);
       } else if (err.message === "UNAUTHORIZED") {
-        errorMessage = "Your session has expired. Please log in again.";
+        setMessages(prev => [...prev, { role: "assistant", content: "Your session has expired. Please log in again." }]);
         navigate("/login");
-      } else if (err.message === "SERVER_ERROR") {
-        errorMessage = "The server encountered an error. Please try again.";
+      } else {
+        // Show the server's own error message directly (rate limit, misconfiguration, etc.)
+        setMessages(prev => [...prev, { role: "assistant", content: err.message }]);
       }
-
-      setMessages(prev => [
-        ...prev,
-        { role: "assistant", content: errorMessage },
-      ]);
 
     } finally {
       setIsLoading(false);
@@ -104,7 +107,21 @@ export default function ChatbotComponent() {
               <div className="message-avatar">
                 {message.role === 'assistant' ? <Bot size={20} /> : <User size={20} />}
               </div>
-              <div className="message-content">{message.content}</div>
+              <div className="message-content">
+                <p>{message.content}</p>
+                {message.resources && message.resources.length > 0 && (
+                  <div className="resource-list">
+                    {message.resources.map((r, i) => (
+                      <div key={i} className="resource-card">
+                        <strong>{r.label}</strong>
+                        <p>{r.description}</p>
+                        {r.url && <a href={r.url} target="_blank" rel="noreferrer">{r.url}</a>}
+                        {r.phone && <span>{r.phone}</span>}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           ))}
         </div>

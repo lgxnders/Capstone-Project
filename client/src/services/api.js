@@ -18,12 +18,19 @@ export async function sendChatMessage(message, conversationId = null) {
 
 
     const data = await res.json();
+    console.log("API response:", data);
 
-    console.log("DEBUG: Received response data:")
-    console.log(data)
+    if (res.status === 401) throw new Error("UNAUTHORIZED");
+    if (!res.ok) throw new Error(data?.error ?? "SERVER_ERROR");
 
-
-    return { reply: data.reply, conversationId: data.conversationId };
+    return {
+        reply:             data.reply,
+        conversationId:    data.conversationId,
+        resourceIntro:     data.resourceIntro,
+        resources:         data.resources,
+        internalResources: data.internalResources,
+        suggestedPrompts:  data.suggestedPrompts,
+    };
 }
 
 export async function fetchAllResources() {
