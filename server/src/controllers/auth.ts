@@ -31,7 +31,7 @@ export const register = async (req: Request, res: Response) => {
 
         const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
         
-        // atomically increment the userId counter to get the next available ID.
+        // increment the userId counter to get the next available ID.
         const counterDoc = await CounterModel.findOneAndUpdate(
             { _id: 'userId' },
             { $inc: { seq: 1 } },
