@@ -33,6 +33,7 @@ export type DagOutput = {
     resources:          Resource[];          // Hardcoded crisis/external resources. Present in flagged path only.
     internalResources:  InternalResource[];  // DB resources present in topic path only.
     suggestedPrompts:   string[];
+    resourceIntro:      string;              // Natural-language intro sentence to show before the resource list.
 };
 
 export interface InternalResource {
@@ -260,17 +261,43 @@ function detectTopic(message: string): string | null {
 }
 
 
+const RESOURCE_INTROS: Record<string, string> = {
+    // Flagged / crisis paths.
+    'suicidal':      "I'm sorry you're feeling this way. Please check out these resources:",
+    'self-harm':     "I'm sorry you're going through this. Please check out these resources:",
+    'violence':      "I'm sorry you're experiencing this. Please check out these resources:",
+    'abuse':         "I'm sorry you're in this situation. Please check out these resources:",
+    'crisis':        "I'm sorry you're having such a hard time. Please check out these resources:",
+    'other':         "I'm sorry you're struggling right now. Please check out these resources:",
+
+    // Topic paths.
+    'anxiety':       "I'm sorry you're experiencing anxiety. Check out these resources:",
+    'depression':    "I'm sorry you're feeling this way. Check out these resources:",
+    'grief':         "I'm sorry for your loss. Check out these resources:",
+    'relationships': "I'm sorry you're going through this. Check out these resources:",
+    'stress':        "I'm sorry you're feeling so stressed. Check out these resources:",
+
+    // Gentle nudge.
+    'nudge':         "I'm glad you're talking about this. Here are some resources that may help:",
+};
+
+
+function getIntro(key: string): string {
+    return RESOURCE_INTROS[key] ?? RESOURCE_INTROS['other'] ?? "You may be interested in these resources:";
+}
+
 function crisisLeaf(category: ResourceCategory, promptKey: string): DagOutput {
     return {
         suggestResources:  true,
         resources:         RESOURCES[category],
         internalResources: [],
         suggestedPrompts:  PROMPTS[promptKey] ?? [],
+        resourceIntro:     getIntro(promptKey),
     };
 }
 
 function noResourceLeaf(): DagOutput {
-    return { suggestResources: false, resources: [], internalResources: [], suggestedPrompts: [] };
+    return { suggestResources: false, resources: [], internalResources: [], suggestedPrompts: [], resourceIntro: '' };
 }
 
 
@@ -290,6 +317,8 @@ async function topicLeaf(topic: string, promptKey: string): Promise<DagOutput> {
         type:        d.type,
     }));
 
+    const intro = getIntro(promptKey);
+
     // If the DB has results, use them as internal resources.
     if (internalResources.length > 0) {
         return {
@@ -297,6 +326,7 @@ async function topicLeaf(topic: string, promptKey: string): Promise<DagOutput> {
             resources:         [],
             internalResources,
             suggestedPrompts:  PROMPTS[promptKey] ?? [],
+            resourceIntro:     intro,
         };
     }
 
@@ -309,6 +339,7 @@ async function topicLeaf(topic: string, promptKey: string): Promise<DagOutput> {
         resources:         fallbackResources,
         internalResources: [],
         suggestedPrompts:  PROMPTS[promptKey] ?? [],
+        resourceIntro:     fallbackResources.length > 0 ? intro : '',
     };
 }
 
@@ -361,6 +392,7 @@ export async function runResourceDag(input: DagInput): Promise<DagOutput> {
             resources:         RESOURCES['general'],
             internalResources: [],
             suggestedPrompts:  PROMPTS['nudge'] ?? [],
+            resourceIntro:     getIntro('nudge'),
         };
     }
 

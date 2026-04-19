@@ -42,34 +42,25 @@ export const sendMessage = async (req: AuthRequest, res: Response) => {
         // Step 1: psychologist agent screens the message for red flags.
         const psychResult = await psychologistAgent(message);
 
-        // Step 2: if flagged, use the crisis response and skip the patient agent.
-        // Step 3: if clear, patient agent generates the empathetic reply.
-        let replyContent: string;
-        if (psychResult.flagged) {
-            replyContent = CRISIS_RESPONSE;
-        } else {
-            replyContent = await patientAgent(formattedHistory, message);
-        }
-
-        // Step 4: resource DAG runs on both paths to select resources + suggested prompts.
-        const { resources, internalResources, suggestedPrompts } = await runResourceDag({
+        // Step 2: run the resource DAG to determine resources + short reply.
+        const { resources, internalResources, suggestedPrompts, resourceIntro } = await runResourceDag({
             userMessage:         message,
-            patientReply:        psychResult.flagged ? '' : replyContent,
+            patientReply:        '',
             conversationHistory: formattedHistory,
             psychologistResult:  psychResult,
         });
 
-        // Append resource URLs to the reply for the frontend to display inline.
-        if (internalResources.length > 0) {
-            const resourceLines = internalResources
-                .map((r) => `${r.title}: ${r.url}`)
-                .join(' | ');
-            replyContent += ` Here are some resources that may help: ${resourceLines}`;
-        } else if (resources.length > 0) {
-            const resourceLines = resources
-                .map((r) => `${r.label}: ${r.url}`)
-                .join(' | ');
-            replyContent += ` Here are some resources that may help: ${resourceLines}`;
+        // Step 3: pick the reply:
+        //   - flagged         → crisis response (patient agent never called)
+        //   - resources found → short templated line from the DAG (patient agent skipped)
+        //   - no resources    → patient agent generates a freeform reply
+        let replyContent: string;
+        if (psychResult.flagged) {
+            replyContent = CRISIS_RESPONSE;
+        } else if (resourceIntro) {
+            replyContent = resourceIntro;
+        } else {
+            replyContent = await patientAgent(formattedHistory, message);
         }
 
         const flagged      = psychResult.flagged;
@@ -103,7 +94,14 @@ export const sendMessage = async (req: AuthRequest, res: Response) => {
             { $addToSet: { conversations: conversation._id } }
         );
 
-        res.json({ reply: replyContent, conversationId: conversation._id, resources, suggestedPrompts });
+        res.json({
+            reply:             replyContent,
+            conversationId:    conversation._id,
+            resourceIntro,
+            resources,
+            internalResources,
+            suggestedPrompts,
+        });
         
     } catch (error) {
         console.error('sendMessage error:', error);
