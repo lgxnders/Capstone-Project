@@ -37,8 +37,6 @@ export const sendMessage = async (req: AuthRequest, res: Response) => {
 
         const formattedHistory = formatMessagesForAI(conversation.messages as any[]);
 
-        // --- Agent orchestration ---
-
         // Step 1: psychologist agent screens the message for red flags.
         const psychResult = await psychologistAgent(message);
 
