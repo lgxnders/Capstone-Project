@@ -1,12 +1,5 @@
 /* Footer */
 .footer {
-  height: 3rem; 
-  background-color: #3d1471;
-  color: #fff;
-  text-align: center;
-  line-height: 3rem; 
-}/* Footer */
-.footer {
   height: 3rem;
   min-height: 3rem;
   background-image: linear-gradient(rgba(0,0,0,0.18), rgba(0,0,0,0.18)), linear-gradient(to right top, #0066ff, #345aff, #534bff, #6e36ff, #8700ff);
@@ -20,4 +13,11 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 -2px 6px rgba(0,0,0,0.08);
+
+  /* --- THE FIX --- */
+  margin-top: auto; 
+  flex-shrink: 0;
+  width: 100%;
+  position: relative;
+  z-index: 10;
 }
