@@ -82,3 +82,57 @@ export async function register(formData) {
     const data = await res.json();
     return { ok: res.ok, data };
 }
+
+export async function createResource(resourceData) {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("NOT_LOGGED_IN");
+
+    const res = await fetch(`${API_BASE}/resources`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify(resourceData),
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data?.error ?? "Failed to create resource");
+    return data.resource;
+}
+
+export async function updateResource(id, resourceData) {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("NOT_LOGGED_IN");
+
+    const res = await fetch(`${API_BASE}/resources/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify(resourceData),
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data?.error ?? "Failed to update resource");
+    return data.resource;
+}
+
+export async function deleteResource(id) {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("NOT_LOGGED_IN");
+
+    const res = await fetch(`${API_BASE}/resources/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Bearer ${token}`,
+        },
+    });
+
+    if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data?.error ?? "Failed to delete resource");
+    }
+    return true;
+}

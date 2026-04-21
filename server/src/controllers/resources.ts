@@ -46,3 +46,52 @@ export const getResourceById = async (req: Request, res: Response) => {
         res.status(500).json({ error: 'Failed to fetch resource' });
     }
 };
+
+export const createResource = async (req: Request, res: Response) => {
+    try {
+        const resourceData = req.body;
+        const resource = new ResourceModel(resourceData);
+        await resource.save();
+        res.status(201).json({ resource });
+    } catch (error: any) {
+        if (error.code === 11000) {
+            return res.status(400).json({ error: 'Resource with this URL already exists' });
+        }
+        console.error('createResource error:', error);
+        res.status(500).json({ error: 'Failed to create resource' });
+    }
+};
+
+export const updateResource = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const resource = await ResourceModel.findByIdAndUpdate(id, req.body, { new: true, runValidators: true }).select('-embedding');
+        if (!resource) {
+            return res.status(404).json({ error: 'Resource not found' });
+        }
+        res.json({ resource });
+    } catch (error: any) {
+        if (error.name === 'CastError') {
+            return res.status(400).json({ error: 'Invalid resource ID' });
+        }
+        console.error('updateResource error:', error);
+        res.status(500).json({ error: 'Failed to update resource' });
+    }
+};
+
+export const deleteResource = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        const resource = await ResourceModel.findByIdAndDelete(id);
+        if (!resource) {
+            return res.status(404).json({ error: 'Resource not found' });
+        }
+        res.status(200).json({ message: 'Resource deleted successfully' });
+    } catch (error: any) {
+        if (error.name === 'CastError') {
+            return res.status(400).json({ error: 'Invalid resource ID' });
+        }
+        console.error('deleteResource error:', error);
+        res.status(500).json({ error: 'Failed to delete resource' });
+    }
+};
