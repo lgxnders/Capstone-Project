@@ -1,0 +1,193 @@
+[
+  {
+    "id": "bd72acf8-e31c-45aa-bcf0-bc8e7764c43b",
+    "title": "Depression - National Institute of Mental Health",
+    "url": "https://www.nimh.nih.gov/health/topics/depression",
+    "description": "Learn about NIMH research on depression. Find resources on the signs and symptoms of depression, types, and potential treatments and therapies.",
+    "type": "article",
+    "topics": [
+      "depression",
+      "postpartum depression"
+    ],
+    "tags": [
+      "government",
+      "research",
+      "studies"
+    ],
+    "targetStates": [
+      "feeling sad",
+      "feeling low",
+      "can't eat"
+    ],
+    "timeEstimate": 10,
+    "accessLevel": "low",
+    "credibilityLevel": "high",
+    "embedding": []
+  },
+  {
+    "id": "61fcba3c-b27a-48f2-9cad-9ef0c312eb9f",
+    "title": "Understanding and Finding Help for Depression - CMHA",
+    "url": "https://ontario.cmha.ca/documents/understanding-and-finding-help-for-depression/",
+    "description": "Learn about depression and how to find help for children and teens in Ontario.",
+    "type": "article",
+    "topics": [
+      "depression",
+      "finding help",
+      "understanding depression"
+    ],
+    "tags": [
+      "understanding",
+      "mental health",
+      "feeling sad",
+      "finding help",
+      "getting help"
+    ],
+    "targetStates": [
+      "depressed",
+      "unable to get out of bed",
+      "feeling worthless"
+    ],
+    "timeEstimate": 8,
+    "accessLevel": "med",
+    "credibilityLevel": "high",
+    "embedding": []
+  },
+  {
+    "id": "a3f1d2e4-7c8b-4a9f-b6d5-e2c1f0a9b3d7",
+    "title": "Anxiety Disorders - National Institute of Mental Health",
+    "url": "https://www.nimh.nih.gov/health/topics/anxiety-disorders",
+    "description": "Overview of anxiety disorders from the NIMH — covering types, symptoms, risk factors, and evidence-based treatments.",
+    "type": "article",
+    "topics": [
+      "anxiety",
+      "anxiety disorders",
+      "panic disorder"
+    ],
+    "tags": [
+      "government",
+      "research",
+      "anxiety",
+      "panic"
+    ],
+    "targetStates": [
+      "feeling anxious",
+      "panic attacks",
+      "constant worry"
+    ],
+    "timeEstimate": 10,
+    "accessLevel": "low",
+    "credibilityLevel": "high",
+    "embedding": []
+  },
+  {
+    "id": "b5e2f3a1-9d4c-4b7e-a8f6-c3d2e1f0b4a8",
+    "title": "Understanding Anxiety - Anxiety Canada",
+    "url": "https://www.anxietycanada.com/learn-about-anxiety/",
+    "description": "Anxiety Canada's plain-language guide to understanding what anxiety is, why it happens, and how to manage it with proven strategies.",
+    "type": "article",
+    "topics": [
+      "anxiety",
+      "understanding anxiety",
+      "coping strategies"
+    ],
+    "tags": [
+      "anxiety",
+      "coping",
+      "self-help",
+      "mental health"
+    ],
+    "targetStates": [
+      "feeling overwhelmed",
+      "on edge",
+      "can't calm down"
+    ],
+    "timeEstimate": 8,
+    "accessLevel": "low",
+    "credibilityLevel": "high",
+    "embedding": []
+  },
+  {
+    "id": "c7d4e5b2-1f6a-4c8d-b9e7-d4f3e2a1c5b9",
+    "title": "MindShift CBT - Anxiety Relief App",
+    "url": "https://www.anxietycanada.com/resources/mindshift-cbt/",
+    "description": "Free CBT-based mobile app from Anxiety Canada designed to help you relax, think more clearly, and tackle anxiety head-on.",
+    "type": "tool",
+    "topics": [
+      "anxiety",
+      "CBT",
+      "coping strategies"
+    ],
+    "tags": [
+      "anxiety",
+      "app",
+      "CBT",
+      "self-help",
+      "tools"
+    ],
+    "targetStates": [
+      "feeling anxious",
+      "panic",
+      "overwhelmed"
+    ],
+    "timeEstimate": 5,
+    "accessLevel": "low",
+    "credibilityLevel": "high",
+    "embedding": []
+  },
+  {
+    "id": "d9f6a7c3-2b8e-4d1f-c0a8-e5b4f3c2d6a0",
+    "title": "Breathing Exercises for Anxiety - Headspace",
+    "url": "https://www.headspace.com/meditation/anxiety",
+    "description": "Guided breathing and mindfulness exercises from Headspace to help calm anxiety and reduce stress in the moment.",
+    "type": "exercise",
+    "topics": [
+      "anxiety",
+      "breathing exercises",
+      "mindfulness"
+    ],
+    "tags": [
+      "anxiety",
+      "breathing",
+      "mindfulness",
+      "calm",
+      "panic"
+    ],
+    "targetStates": [
+      "can't breathe",
+      "panic attack",
+      "feeling anxious"
+    ],
+    "timeEstimate": 5,
+    "accessLevel": "low",
+    "credibilityLevel": "med",
+    "embedding": []
+  },
+  {
+    "id": "e1a8b9d4-3c0f-4e2a-d1b9-f6c5a4b3e7d1",
+    "title": "Anxiety - CMHA Ontario",
+    "url": "https://ontario.cmha.ca/documents/anxiety-disorders/",
+    "description": "Canadian Mental Health Association Ontario's resource on anxiety disorders — symptoms, types, and where to find help in Ontario.",
+    "type": "article",
+    "topics": [
+      "anxiety",
+      "anxiety disorders",
+      "finding help"
+    ],
+    "tags": [
+      "anxiety",
+      "mental health",
+      "Canada",
+      "finding help",
+      "getting help"
+    ],
+    "targetStates": [
+      "nervous",
+      "worried",
+      "anxious"
+    ],
+    "timeEstimate": 7,
+    "accessLevel": "low",
+    "credibilityLevel": "high",
+    "embedding": []
+  }
+]

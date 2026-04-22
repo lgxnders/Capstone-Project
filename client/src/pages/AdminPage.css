@@ -1,0 +1,150 @@
+.admin-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  background: #f9fafb;
+}
+
+.admin-inner {
+  position: relative;
+  z-index: 1;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 24px;
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.admin-inner h1 {
+  color: #1f2937;
+  font-size: 2.5rem;
+  margin: 0;
+  font-weight: 800;
+}
+
+.admin-link-wrapper {
+  margin-top: 8px;
+}
+
+.admin-link {
+  display: inline-block;
+  padding: 8px 14px;
+  background: #0077ff;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.admin-link:hover {
+  background: #0063d1;
+}
+
+.admin-portal {
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto;
+}
+
+.admin-panels {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.panel {
+  flex: 1;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.add-panel form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.add-panel input,
+.add-panel select,
+.add-panel textarea {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.add-panel textarea {
+  min-height: 80px;
+}
+
+.add-panel button {
+  padding: 10px;
+  background: #0077ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-panel button:hover {
+  background: #0063d1;
+}
+
+.list-panel .resource-list {
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.resource-item {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+.resource-item h4 {
+  margin: 0 0 10px 0;
+}
+
+.resource-item p {
+  margin: 5px 0;
+}
+
+.actions {
+  margin-top: 10px;
+}
+
+.actions button {
+  margin-right: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.actions button:first-child {
+  background: #28a745;
+  color: white;
+}
+
+.actions button:last-child {
+  background: #dc3545;
+  color: white;
+}
+
+.admin-section {
+  margin-top: 28px;
+}
+
+.admin-section p {
+}

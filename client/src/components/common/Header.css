@@ -1,0 +1,214 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  box-sizing: border-box;
+
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+
+  transition: background 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
+}
+
+.header--scrolled {
+  background: rgba(255, 255, 255, 0.11);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 4px 28px rgba(80, 50, 180, 0.18), 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 28px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+  transition: opacity 200ms ease;
+}
+
+.header-logo:hover {
+  opacity: 0.85;
+  text-decoration: none;
+  color: #fff;
+}
+
+.header-logo-icon {
+  font-size: 1rem;
+  color: rgba(180, 160, 255, 0.9);
+  line-height: 1;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.header-link {
+  padding: 7px 13px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(108, 85, 190, 0.9);
+  text-decoration: none;
+  transition: color 180ms ease, background 180ms ease;
+}
+
+.header-link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.09);
+  text-decoration: none;
+}
+
+.header-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 0 6px;
+}
+
+.header-cta {
+  padding: 7px 18px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  background: rgba(124, 58, 237, 0.55);
+  border: 1px solid rgba(167, 139, 250, 0.35);
+  backdrop-filter: blur(8px);
+  transition: background 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.header-cta:hover {
+  background: rgba(124, 58, 237, 0.75);
+  border-color: rgba(167, 139, 250, 0.6);
+  box-shadow: 0 0 16px rgba(124, 58, 237, 0.4);
+  text-decoration: none;
+  color: #fff;
+}
+
+.header-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 200ms ease;
+}
+
+.header-hamburger:hover {
+  background: rgba(255, 255, 255, 0.13);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.header-hamburger span {
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 2px;
+  transition: transform 280ms ease, opacity 200ms ease;
+  transform-origin: center;
+}
+
+.header-hamburger--open span:nth-child(1) {
+  transform: translateY(6.5px) rotate(45deg);
+}
+.header-hamburger--open span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.header-hamburger--open span:nth-child(3) {
+  transform: translateY(-6.5px) rotate(-45deg);
+}
+
+.header-mobile-menu {
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 320ms ease, padding 320ms ease;
+  background: rgba(20, 10, 50, 0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 0 20px;
+}
+
+.header-mobile-menu--open {
+  max-height: 400px;
+  padding: 12px 20px 20px;
+}
+
+.header-mobile-link {
+  display: block;
+  padding: 12px 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(130, 110, 203, 0.9);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: color 160ms ease, padding-left 160ms ease;
+}
+
+.header-mobile-link:hover {
+  color: #fff;
+  padding-left: 16px;
+  text-decoration: none;
+}
+
+.header-mobile-cta {
+  margin-top: 12px;
+  text-align: center;
+  border-bottom: none;
+  border-radius: 8px;
+  padding: 12px;
+  background: rgba(124, 58, 237, 0.5);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  font-weight: 600;
+  color: #fff;
+}
+
+.header-mobile-cta:hover {
+  background: rgba(124, 58, 237, 0.7);
+  padding-left: 12px;
+}
+
+@media (max-width: 768px) {
+  .header-nav {
+    display: none;
+  }
+
+  .header-hamburger {
+    display: flex;
+  }
+
+  .header-mobile-menu {
+    display: flex;
+  }
+}
