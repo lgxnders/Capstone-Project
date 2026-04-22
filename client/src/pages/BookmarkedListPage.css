@@ -68,7 +68,7 @@ footer {
   font-weight: 600;
 }
 
-/* Added: Style for the new Unbookmark button */
+/* Style for the Unbookmark button */
 .bookmark-remove {
   background: #f3f4f6;
   border: none;
@@ -80,7 +80,7 @@ footer {
   transition: all 0.2s ease;
 }
 
-/* Added: Hover effect for the Unbookmark button to make it turn red */
+/* Hover effect for the Unbookmark button to make it turn red */
 .bookmark-remove:hover {
   background: #fee2e2 !important;
   color: #ef4444 !important;

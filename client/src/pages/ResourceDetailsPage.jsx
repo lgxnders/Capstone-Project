@@ -63,8 +63,8 @@ export default function ResourceDetailsPage() {
         display: "flex",
         flexDirection: "column",
         background: "#f9fafb",
-        position: "relative", // Ensure the container is the relative parent for absolute blobs
-        overflow: "hidden",   // Keep the blobs from creating scrollbars
+        position: "relative", 
+        overflow: "hidden",   
       }}
     >
       <div className="home-blob-1" />
@@ -81,7 +81,7 @@ export default function ResourceDetailsPage() {
           borderRadius: "16px",
           boxShadow: "0 4px 6px rgba(0,0,0,0.05)",
           width: "90%",
-          zIndex: 1, // Explicitly pull the content above the blobs
+          zIndex: 1,
           position: "relative",
         }}
       >

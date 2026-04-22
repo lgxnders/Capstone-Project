@@ -9,12 +9,19 @@ export default function BookmarkedListPage() {
     const saved = localStorage.getItem("bookmarks");
     return saved ? JSON.parse(saved) : [];
   });
+  const truncateDescription = (text) => {
+    if (!text) return "";
+    const sentences = text.split(". ");
+    if (sentences.length <= 3) return text;
+    return sentences.slice(0, 3).join(". ") + "...";
+  };
 
   const removeBookmark = (mongoId) => {
     const updated = bookmarks.filter((item) => item._id !== mongoId);
     setBookmarks(updated);
     localStorage.setItem("bookmarks", JSON.stringify(updated));
   };
+
   return (
     <div className="bookmark-container">
       <div className="home-blob-1" />
@@ -24,8 +31,9 @@ export default function BookmarkedListPage() {
       <main className="bookmark-inner">
         <div className="bookmark-section">
           <center>
-            <h1>Your Bookmarks</h1>
+            <h1 style={{ marginBottom: "20px" }}>Your Bookmarks</h1>
           </center>
+
           <div className="bookmark-list">
             {bookmarks.length === 0 ? (
               <p
@@ -35,9 +43,12 @@ export default function BookmarkedListPage() {
               </p>
             ) : (
               bookmarks.map((resource) => (
-                <div key={resource._id} className="bookmark-item">
-                  <div style={{ flex: 1 }}>
-                    {/* THIS IS THE LINK: It wraps the title so you can click it */}
+                <div
+                  key={resource._id}
+                  className="bookmark-item"
+                  style={{ flexDirection: "column", alignItems: "flex-start" }}
+                >
+                  <div style={{ width: "100%", marginBottom: "12px" }}>
                     <Link
                       to={`/resource/${resource._id}`}
                       style={{ textDecoration: "none", color: "inherit" }}
@@ -45,19 +56,47 @@ export default function BookmarkedListPage() {
                       <strong
                         style={{
                           display: "block",
-                          fontSize: "1.1rem",
+                          fontSize: "1.2rem",
+                          color: "#1f2937",
                           marginBottom: "4px",
                         }}
                       >
                         {resource.title}
                       </strong>
                     </Link>
-                    <span style={{ fontSize: "0.9rem", opacity: 0.8 }}>
+
+                    <span
+                      style={{
+                        fontSize: "0.85rem",
+                        color: "#7c3aed",
+                        fontWeight: "600",
+                        textTransform: "capitalize",
+                        display: "block",
+                        marginBottom: "8px",
+                      }}
+                    >
                       {resource.type}
                     </span>
+                    <p
+                      style={{
+                        fontSize: "0.95rem",
+                        color: "#4b5563",
+                        lineHeight: "1.5",
+                        margin: "0",
+                      }}
+                    >
+                      {truncateDescription(resource.description)}
+                    </p>
                   </div>
 
-                  <div style={{ display: "flex", gap: "10px" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "10px",
+                      width: "100%",
+                      justifyContent: "flex-end",
+                    }}
+                  >
                     <Link
                       to={`/resources/${resource._id}`}
                       className="bookmark-link"
