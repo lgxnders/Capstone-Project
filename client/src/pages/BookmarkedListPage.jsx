@@ -1,25 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import "./BookmarkedListPage.css";
 
 export default function BookmarkedListPage() {
+  const { user } = useAuth();
+
+  // Create the same dynamic key
+  const bookmarkLoginKey = user ? `bookmarks_${user.userId}` : "bookmarks_user";
+
   const [bookmarks, setBookmarks] = useState(() => {
-    const saved = localStorage.getItem("bookmarks");
+    const saved = localStorage.getItem(bookmarkLoginKey);
     return saved ? JSON.parse(saved) : [];
   });
+
+  // Re-sync bookmarks if the user changes
+  useEffect(() => {
+    const saved = localStorage.getItem(bookmarkLoginKey);
+    const parsed = saved ? JSON.parse(saved) : [];
+    setBookmarks(parsed);
+  }, [bookmarkLoginKey]);
+
+  const removeBookmark = (mongoId) => {
+    const updated = bookmarks.filter((item) => item._id !== mongoId);
+    setBookmarks(updated);
+    localStorage.setItem(bookmarkLoginKey, JSON.stringify(updated));
+  };
+
   const truncateDescription = (text) => {
     if (!text) return "";
     const sentences = text.split(". ");
     if (sentences.length <= 3) return text;
     return sentences.slice(0, 3).join(". ") + "...";
-  };
-
-  const removeBookmark = (mongoId) => {
-    const updated = bookmarks.filter((item) => item._id !== mongoId);
-    setBookmarks(updated);
-    localStorage.setItem("bookmarks", JSON.stringify(updated));
   };
 
   return (

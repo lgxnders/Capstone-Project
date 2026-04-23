@@ -1,24 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { fetchResourceById } from "../services/api";
+import useAuth from "../hooks/useAuth";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 
 export default function ResourceDetailsPage() {
   const { id } = useParams();
+  const { user, isLoggedIn } = useAuth();
   const [resource, setResource] = useState(null);
   const [loading, setLoading] = useState(true);
   const [bookmarked, setBookmarked] = useState(false);
   const [error, setError] = useState("");
+
+  // Create a dynamic key
+  // If not logged in, we fall back to "guest" or just don't allow saving
+  const bookmarkLoginKey = user ? `bookmarks_${user.userId}` : "bookmarks_user";
 
   useEffect(() => {
     const getResource = async () => {
       try {
         const data = await fetchResourceById(id);
         setResource(data);
-        const savedBookmarks = JSON.parse(
-          localStorage.getItem("bookmarks") || "[]",
-        );
+        
+        // Use the user-specific key to check bookmark status
+        const savedBookmarks = JSON.parse(localStorage.getItem(bookmarkLoginKey) || "[]");
         const isBookmarked = savedBookmarks.some((item) => item._id === id);
         setBookmarked(isBookmarked);
       } catch (err) {
@@ -27,12 +33,16 @@ export default function ResourceDetailsPage() {
         setLoading(false);
       }
     };
-
     getResource();
-  }, [id]);
+  }, [id, bookmarkLoginKey]); // Re-run if bookmarkLoginKey changes (user logs in/out)
 
   const handleBookmarkToggle = () => {
-    let savedBookmarks = JSON.parse(localStorage.getItem("bookmarks") || "[]");
+    if (!isLoggedIn) {
+      alert("Please log in to save bookmarks to your account.");
+      return;
+    }
+
+    let savedBookmarks = JSON.parse(localStorage.getItem(bookmarkLoginKey) || "[]");
 
     if (bookmarked) {
       savedBookmarks = savedBookmarks.filter((item) => item._id !== id);
@@ -40,7 +50,7 @@ export default function ResourceDetailsPage() {
       savedBookmarks.push(resource);
     }
 
-    localStorage.setItem("bookmarks", JSON.stringify(savedBookmarks));
+    localStorage.setItem(bookmarkLoginKey, JSON.stringify(savedBookmarks));
     setBookmarked(!bookmarked);
   };
 
