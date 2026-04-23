@@ -1,9 +1,15 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { randomUUID } from 'crypto';
 import type { Resource } from '../types/resource';
 
 export type ResourceDocument = Resource & Document;
 
 const ResourceSchema = new Schema<ResourceDocument>({
+    id: {
+        type: String,
+        required: true,
+        default: randomUUID,
+    },
     title: {
         type: String,
         required: true,

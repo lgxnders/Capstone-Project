@@ -44,6 +44,7 @@ const AdminPortal = () => {
         e.preventDefault();
         try {
             const data = {
+                id: editingResource ? editingResource.id : crypto.randomUUID(),
                 ...formData,
                 title: formData.title.trim(),
                 url: formData.url.trim(),
