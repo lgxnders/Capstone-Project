@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
+import { UserModel } from '../models/User';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -43,16 +44,21 @@ export const requireAuth = (req: AuthRequest, res: Response, next: NextFunction)
     });
 };
 
-export const requireAdmin = (req: AuthRequest, res: Response, next: NextFunction): void => {
+export const requireAdmin = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
     if (!req.user) {
         res.status(401).json({ error: 'Unauthorized.' });
         return;
     }
 
-    if (req.user.role !== 'admin') {
-        res.status(403).json({ error: 'Admin access required.' });
-        return;
+    try {
+        const user = await UserModel.findOne({ userId: req.user.userId });
+        if (!user || user.role !== 'admin') {
+            res.status(403).json({ error: 'Admin access required.' });
+            return;
+        }
+        next();
+    } catch (error) {
+        console.error('requireAdmin error:', error);
+        res.status(500).json({ error: 'Server error' });
     }
-
-    next();
 };

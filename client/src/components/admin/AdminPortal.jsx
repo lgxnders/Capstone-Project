@@ -45,10 +45,14 @@ const AdminPortal = () => {
         try {
             const data = {
                 ...formData,
-                topics: formData.topics.split(',').map(t => t.trim()),
-                tags: formData.tags.split(',').map(t => t.trim()),
-                targetStates: formData.targetStates.split(',').map(t => t.trim()),
-                timeEstimate: formData.timeEstimate ? parseInt(formData.timeEstimate) : undefined
+                title: formData.title.trim(),
+                url: formData.url.trim(),
+                description: formData.description.trim(),
+                topics: formData.topics.split(',').map(t => t.trim()).filter(Boolean),
+                tags: formData.tags.split(',').map(t => t.trim()).filter(Boolean),
+                targetStates: formData.targetStates.split(',').map(t => t.trim()).filter(Boolean),
+                timeEstimate: formData.timeEstimate ? parseInt(formData.timeEstimate) : undefined,
+                embedding: []
             };
 
             if (editingResource) {
@@ -187,7 +191,21 @@ const AdminPortal = () => {
                             <option value="high">High</option>
                         </select>
                         <button type="submit">{editingResource ? 'Update' : 'Add'} Resource</button>
-                        {editingResource && <button type="button" onClick={() => setEditingResource(null)}>Cancel</button>}
+                        {editingResource && <button type="button" onClick={() => {
+                            setEditingResource(null);
+                            setFormData({
+                                title: '',
+                                url: '',
+                                description: '',
+                                type: 'article',
+                                topics: '',
+                                tags: '',
+                                targetStates: '',
+                                timeEstimate: '',
+                                accessLevel: 'low',
+                                credibilityLevel: 'med'
+                            });
+                        }}>Cancel</button>}
                     </form>
                 </div>
 

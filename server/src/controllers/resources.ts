@@ -49,13 +49,34 @@ export const getResourceById = async (req: Request, res: Response) => {
 
 export const createResource = async (req: Request, res: Response) => {
     try {
-        const resourceData = req.body;
+        console.log('req.body:', req.body);
+        const resourceData = {
+            ...req.body,
+            url: String(req.body.url || '').trim(),
+        };
+
+        console.log('Attempting to create resource with URL:', resourceData.url);
+
+        if (!resourceData.url) {
+            return res.status(400).json({ error: 'URL is required' });
+        }
+
+        const existing = await ResourceModel.findOne({ url: resourceData.url });
+        console.log('Existing resource found:', existing ? existing.title : 'none');
+        if (existing) {
+            return res.status(400).json({ error: `Resource with this URL already exists: ${existing.title}` });
+        }
+
         const resource = new ResourceModel(resourceData);
         await resource.save();
         res.status(201).json({ resource });
     } catch (error: any) {
+        console.log('Save error:', error);
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({ error: error.message });
+        }
         if (error.code === 11000) {
-            return res.status(400).json({ error: 'Resource with this URL already exists' });
+            return res.status(400).json({ error: 'Resource with this URL already exists.' });
         }
         console.error('createResource error:', error);
         res.status(500).json({ error: 'Failed to create resource' });
@@ -67,15 +88,15 @@ export const updateResource = async (req: Request, res: Response) => {
     try {
         const resource = await ResourceModel.findByIdAndUpdate(id, req.body, { new: true, runValidators: true }).select('-embedding');
         if (!resource) {
-            return res.status(404).json({ error: 'Resource not found' });
+            return res.status(404).json({ error: 'Resource not found.' });
         }
         res.json({ resource });
     } catch (error: any) {
         if (error.name === 'CastError') {
-            return res.status(400).json({ error: 'Invalid resource ID' });
+            return res.status(400).json({ error: 'Invalid resource ID.' });
         }
         console.error('updateResource error:', error);
-        res.status(500).json({ error: 'Failed to update resource' });
+        res.status(500).json({ error: 'Failed to update resource.' });
     }
 };
 

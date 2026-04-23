@@ -87,6 +87,8 @@ export async function createResource(resourceData) {
     const token = localStorage.getItem("token");
     if (!token) throw new Error("NOT_LOGGED_IN");
 
+    console.log('Sending resource data:', resourceData);
+
     const res = await fetch(`${API_BASE}/resources`, {
         method: "POST",
         headers: {

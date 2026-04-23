@@ -12,6 +12,7 @@ const ResourceSchema = new Schema<ResourceDocument>({
         type: String,
         required: true,
         unique: true,
+        trim: true,
     },
     description: {
         type: String,
