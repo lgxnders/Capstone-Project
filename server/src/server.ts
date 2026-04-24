@@ -20,7 +20,14 @@ const PORT = process.env.PORT;
 
 // Set up our Express app.
 const app = express();
-app.use(cors({ origin: [process.env.CLIENT_URL || 'http://localhost:5173'] }));
+app.use(cors({
+    origin: [
+        'http://localhost:5173',
+        'https://69eb85ff30e88700081cd581--care-compass-2026.netlify.app',
+        'https://care-compass-2026.netlify.app',
+        process.env.CLIENT_URL,
+    ].filter(Boolean)
+}));
 app.use(express.json());
 
 // Define routing.
