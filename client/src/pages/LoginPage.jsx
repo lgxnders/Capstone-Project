@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { login } from "../services/api";
 import "./LoginPage.css";
 
 export default function LoginPage() {
@@ -21,15 +22,9 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const { ok, data } = await login(formData.email, formData.password);
 
-      const data = await response.json();
-
-      if (response.ok) {
+      if (ok) {
         localStorage.setItem("token", data.token);
         window.dispatchEvent(new Event('authchange'));
         navigate("/chat");

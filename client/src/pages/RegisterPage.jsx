@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { register } from "../services/api";
 import "./RegisterPage.css";
 
 export default function RegisterPage() {
@@ -24,16 +25,9 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const { ok, data } = await register(formData);
 
-      const data = await response.json();
-
-      if (response.ok) {
-
+      if (ok) {
         // Server creates the user, and then will redirect to the login pg
         navigate("/login");
       } else {
