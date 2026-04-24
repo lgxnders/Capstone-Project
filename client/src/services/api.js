@@ -1,4 +1,4 @@
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = import.meta.env.VITE_API_URL || "https://capstone-project-1ngn.onrender.com";
 const API_BASE = `${BASE_URL}/api`;
 const AUTH_BASE = `${BASE_URL}/api/auth`;
 
