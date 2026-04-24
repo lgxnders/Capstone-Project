@@ -10,13 +10,13 @@ const AdminPortal = () => {
         title: '',
         url: '',
         description: '',
-        type: 'article',
+        type: '',
         topics: '',
         tags: '',
         targetStates: '',
         timeEstimate: '',
-        accessLevel: 'low',
-        credibilityLevel: 'med'
+        accessLevel: '',
+        credibilityLevel: ''
     });
 
     useEffect(() => {
@@ -67,13 +67,13 @@ const AdminPortal = () => {
                 title: '',
                 url: '',
                 description: '',
-                type: 'article',
+                type: '',
                 topics: '',
                 tags: '',
                 targetStates: '',
                 timeEstimate: '',
-                accessLevel: 'low',
-                credibilityLevel: 'med'
+                accessLevel: '',
+                credibilityLevel: ''
             });
             loadResources();
         } catch (err) {
@@ -87,13 +87,13 @@ const AdminPortal = () => {
             title: resource.title,
             url: resource.url,
             description: resource.description,
-            type: resource.type,
+            type: resource.type || '',
             topics: resource.topics.join(', '),
             tags: resource.tags.join(', '),
             targetStates: resource.targetStates.join(', '),
             timeEstimate: resource.timeEstimate || '',
-            accessLevel: resource.accessLevel,
-            credibilityLevel: resource.credibilityLevel || 'med'
+            accessLevel: resource.accessLevel || '',
+            credibilityLevel: resource.credibilityLevel || ''
         });
     };
 
@@ -142,7 +142,8 @@ const AdminPortal = () => {
                             onChange={handleInputChange}
                             required
                         />
-                        <select name="type" value={formData.type} onChange={handleInputChange}>
+                        <select name="type" value={formData.type} onChange={handleInputChange} required>
+                            <option value="" disabled>Select Resource Type</option>
                             <option value="article">Article</option>
                             <option value="video">Video</option>
                             <option value="tool">Tool</option>
@@ -181,12 +182,14 @@ const AdminPortal = () => {
                             value={formData.timeEstimate}
                             onChange={handleInputChange}
                         />
-                        <select name="accessLevel" value={formData.accessLevel} onChange={handleInputChange}>
+                        <select name="accessLevel" value={formData.accessLevel} onChange={handleInputChange} required>
+                            <option value="" disabled>Select Access Level</option>
                             <option value="low">Low</option>
                             <option value="med">Medium</option>
                             <option value="high">High</option>
                         </select>
-                        <select name="credibilityLevel" value={formData.credibilityLevel} onChange={handleInputChange}>
+                        <select name="credibilityLevel" value={formData.credibilityLevel} onChange={handleInputChange} required>
+                            <option value="" disabled>Select Credibility Level</option>
                             <option value="low">Low</option>
                             <option value="med">Medium</option>
                             <option value="high">High</option>
@@ -198,13 +201,13 @@ const AdminPortal = () => {
                                 title: '',
                                 url: '',
                                 description: '',
-                                type: 'article',
+                                type: '',
                                 topics: '',
                                 tags: '',
                                 targetStates: '',
                                 timeEstimate: '',
-                                accessLevel: 'low',
-                                credibilityLevel: 'med'
+                                accessLevel: '',
+                                credibilityLevel: ''
                             });
                         }}>Cancel</button>}
                     </form>
@@ -217,7 +220,9 @@ const AdminPortal = () => {
                             <div key={resource._id} className="resource-item">
                                 <h4>{resource.title}</h4>
                                 <p>{resource.description}</p>
-                                <p>Type: {resource.type}</p>
+                                <div className="resource-meta">
+                                    <span className="resource-badge">{resource.type}</span>
+                                </div>
                                 <div className="actions">
                                     <button onClick={() => handleEdit(resource)}>Edit</button>
                                     <button onClick={() => handleDelete(resource._id)}>Delete</button>
