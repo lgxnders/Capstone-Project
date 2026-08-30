@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: care-compass-api
+    env: node
+    plan: free
+    autoDeploy: true
+    rootDir: server
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CLIENT_URL
+        fromService:
+          type: web
+          name: care-compass
+          envVarKey: RENDER_EXTERNAL_URL
+
+  - type: web
+    name: care-compass
+    env: static
+    autoDeploy: true
+    rootDir: client
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: care-compass-api
+          envVarKey: RENDER_EXTERNAL_URL

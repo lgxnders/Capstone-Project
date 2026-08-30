@@ -2,6 +2,7 @@
 env/
 .venv/
 venv/
+client/.env
 server/.env
 
 .vscode/
