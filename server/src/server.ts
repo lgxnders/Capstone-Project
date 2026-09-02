@@ -22,12 +22,14 @@ const PORT = process.env.PORT;
 const app = express();
 const allowedOrigins = [
     'http://localhost:5173',
+    'http://localhost:8000',
     'https://69eb85ff30e88700081cd581--care-compass-2026.netlify.app',
     'https://care-compass-2026.netlify.app',
     process.env.CLIENT_URL,
 ].filter((origin): origin is string => Boolean(origin));
 
-app.use(cors({ origin: allowedOrigins }));
+// Allow all origins for the demo to prevent Render configuration issues
+app.use(cors());
 app.use(express.json());
 
 // Define routing.

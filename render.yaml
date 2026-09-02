@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: care-compass-api
+    name: care-compass-capstone-api
     env: node
     plan: free
     autoDeploy: true
@@ -17,11 +17,11 @@ services:
       - key: CLIENT_URL
         fromService:
           type: web
-          name: care-compass
+          name: care-compass-capstone
           envVarKey: RENDER_EXTERNAL_URL
 
   - type: web
-    name: care-compass
+    name: care-compass-capstone
     env: static
     autoDeploy: true
     rootDir: client
@@ -31,5 +31,5 @@ services:
       - key: VITE_API_URL
         fromService:
           type: web
-          name: care-compass-api
+          name: care-compass-capstone-api
           envVarKey: RENDER_EXTERNAL_URL
