@@ -7,8 +7,12 @@ To run the web application locally, you will need to start both the front-end an
 	`npm install`
 	`npm run dev`
 
-# Back-End:
+# Back-end
 	`cd server`
 	`npm install`
 	`npm run dev`
 	Note: Ensure that the .env file has been placed in the server/src/ directory.
+
+# Deployment
+	care-compass-capstone.onrender.com
+	care-compass-capstone-api.onrender.com
